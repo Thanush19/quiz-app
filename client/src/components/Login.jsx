@@ -43,11 +43,7 @@ function Login() {
 
   // Redirect based on user role after successful login
   if (user) {
-    if (user.role === "seller") {
-      return <Navigate to="/seller-home" />;
-    } else {
-      return <Navigate to="/buyer-home" />;
-    }
+    return <Navigate to="/" />;
   }
 
   return (

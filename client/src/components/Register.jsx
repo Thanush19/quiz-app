@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { backend } from "../../constant"; // Ensure this points to your backend URL
+import { backend } from "../../constant";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom"; // Import useNavigate hook
 
 function Register() {
+  const navigate = useNavigate(); // Initialize useNavigate hook
+
   const [formData, setFormData] = useState({
     username: "",
-
     email: "",
     phoneNumber: "",
     password: "",
@@ -42,6 +44,7 @@ function Register() {
       );
       console.log("Register successful:", response.data);
       // Handle successful registration here (e.g., redirect to login, show success message)
+      navigate("/login"); // Navigate to login page after successful registration
     } catch (error) {
       console.error(
         "Error registering:",
@@ -111,13 +114,19 @@ function Register() {
             />
           </div>
 
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between mb-4">
             <button
               type="submit"
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
             >
               Register
             </button>
+            <span
+              onClick={() => navigate("/login")} // Navigate to login page on click
+              className="text-sm text-blue-500 cursor-pointer hover:underline"
+            >
+              Already have an account? Login
+            </span>
           </div>
         </form>
       </div>
