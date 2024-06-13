@@ -1,12 +1,16 @@
 import React from "react";
 import Sidebar from "./common/Sidebar";
 import Topbar from "./common/Topbar";
+import AttendQuiz from "./quiz/AttendQuiz";
 
 const Home = () => {
   return (
-    <div className="flex">
+    <div className="flex h-screen">
       <Sidebar />
-      <Topbar />
+      <div className="flex flex-col flex-grow">
+        <Topbar />
+        <AttendQuiz />
+      </div>
     </div>
   );
 };

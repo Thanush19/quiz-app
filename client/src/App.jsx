@@ -1,7 +1,9 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Home from "./components/Home";
+import QuestionPanel from "./components/quiz/QuestionPanel";
+import TestResult from "./components/quiz/TestResult";
 
 function App() {
   return (
@@ -9,6 +11,8 @@ function App() {
       <Route path="/register" element=<Register /> />
       <Route path="/login" element=<Login /> />
       <Route path="/" element=<Home /> />
+      <Route path="/test/:quizId" element=<QuestionPanel /> />
+      <Route path="/quiz/:quizId/result" element=<TestResult /> />
     </Routes>
   );
 }
