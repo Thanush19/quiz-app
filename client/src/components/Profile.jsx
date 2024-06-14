@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { Doughnut } from "react-chartjs-2";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Chart as ChartJS, ArcElement, Legend } from "chart.js";
 import { UserContext } from "../context/userContext";
 import { backend } from "../../constant";
 import ThreeDimScatterChart from "./ThreeDimScatterChart";
 
-ChartJS.register(ArcElement, Tooltip, Legend);
+ChartJS.register(ArcElement, Legend);
 
 const Profile = () => {
   const { user } = useContext(UserContext);
@@ -49,11 +49,6 @@ const Profile = () => {
         (acc, cur) => acc + cur.total_questions,
         0
       );
-      const averageTimeTaken =
-        quizAttempts.reduce(
-          (acc, cur) => acc + parseFloat(cur.average_time_taken),
-          0
-        ) / quizAttempts.length;
 
       const correctPercentage = (
         (correctAnswers / totalQuestionsAttempted) *
@@ -65,7 +60,7 @@ const Profile = () => {
       ).toFixed(2);
 
       setCorrectData({
-        labels: ["Correct Percentage", "Others"],
+        labels: ["Correct Percentage", "Total Questions"],
         datasets: [
           {
             label: "Correct Percentage",
@@ -80,12 +75,15 @@ const Profile = () => {
         ],
       });
 
+      const wrongPercentageValue = parseFloat(wrongPercentage);
+      const remainingPercentage = 100 - wrongPercentageValue;
+
       setWrongData({
-        labels: ["Wrong Percentage", "Others"],
+        labels: ["Wrong Percentage"],
         datasets: [
           {
             label: "Wrong Percentage",
-            data: [wrongPercentage, 100 - wrongPercentage],
+            data: [wrongPercentageValue, remainingPercentage],
             backgroundColor: [
               "rgba(255, 99, 132, 0.6)",
               "rgba(211, 211, 211, 0.6)",
@@ -99,7 +97,7 @@ const Profile = () => {
       const averageTimeChartData = quizAttempts.map((attempt, index) => ({
         x: index + 1,
         y: parseFloat(attempt.average_time_taken),
-        z: parseFloat(attempt.correctly_answered), // Using correctly_answered as the z value for example
+        z: parseFloat(attempt.correctly_answered),
       }));
 
       setAverageTimeData(averageTimeChartData);
@@ -108,31 +106,69 @@ const Profile = () => {
 
   return (
     <div>
-      <h1 className="text-center text-2xl font-bold mb-4">Profile Overview</h1>
+      <h1 className="text-center text-2xl text-violet-400 font-bold mb-4">
+        Profile Overview
+      </h1>
       {loading ? (
         <p>Loading quiz data...</p>
       ) : (
         <div className="flex flex-col md:flex-row justify-around items-center">
           {correctData.datasets && (
-            <div className="bg-white p-4 m-2 shadow-md w-[50%] md:w-1/3">
-              <h2 className="text-center text-xl font-semibold mb-2">
-                Correct Answers Percentage
+            <div className="bg-white p-4 m-2 shadow-md w-[50%] md:w-80">
+              <h2 className="text-center text-xl font-semibold text-violet-400  mb-2">
+                Correct Answers (%)
               </h2>
-              <Doughnut data={correctData} />
+              <Doughnut
+                data={correctData}
+                options={{
+                  plugins: {
+                    tooltip: {
+                      callbacks: {
+                        label: function (tooltipItem, data) {
+                          return `${data.labels[tooltipItem.index]}: ${
+                            data.datasets[0].data[tooltipItem.index]
+                          }%`;
+                        },
+                      },
+                    },
+                    legend: {
+                      display: false,
+                    },
+                  },
+                }}
+              />
             </div>
           )}
           {wrongData.datasets && (
-            <div className="bg-white p-4 m-2 shadow-md w-[50%] md:w-1/3">
-              <h2 className="text-center text-xl font-semibold mb-2">
-                Wrong Answers Percentage
+            <div className="bg-white p-4 m-2 shadow-md w-[50%] md:w-80">
+              <h2 className="text-center text-violet-400  text-xl font-semibold mb-2">
+                Wrong Answers (%)
               </h2>
-              <Doughnut data={wrongData} />
+              <Doughnut
+                data={wrongData}
+                options={{
+                  plugins: {
+                    tooltip: {
+                      callbacks: {
+                        label: function (tooltipItem, data) {
+                          return `${data.labels[tooltipItem.index]}: ${
+                            data.datasets[0].data[tooltipItem.index]
+                          }%`;
+                        },
+                      },
+                    },
+                    legend: {
+                      display: false,
+                    },
+                  },
+                }}
+              />
             </div>
           )}
           {averageTimeData.length > 0 && (
-            <div className="bg-white p-4 m-2 shadow-md w-[50%] md:w-1/3">
-              <h2 className="text-center text-xl font-semibold mb-2">
-                Average Time Taken
+            <div className="bg-white p-4 m-2 shadow-md w-[50%] md:w-80">
+              <h2 className="text-center text-violet-400  text-xl font-semibold mb-2">
+                Average Time Taken (in sec)
               </h2>
               <ThreeDimScatterChart data={averageTimeData} />
             </div>
