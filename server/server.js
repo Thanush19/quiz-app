@@ -2,7 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
 const cors = require("cors");
-
+const quizAttemptsRouter = require("./routes/quizAttemptsRouter");
 dotenv.config();
 
 const app = express();
@@ -30,6 +30,7 @@ app.use((req, res, next) => {
 const userRoutes = require("./routes/userRoutes");
 
 app.use("/api/users", userRoutes);
+app.use("/api/quiz-attempts", quizAttemptsRouter);
 
 app.use((req, res) => {
   res.status(404).json({ message: "Not Found" });

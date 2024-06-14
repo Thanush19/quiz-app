@@ -1,13 +1,9 @@
+// authController.js
+
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { validationResult } = require("express-validator");
-const { Pool } = require("pg");
-require("dotenv").config();
-
-const pool = new Pool({
-  connectionString: `postgresql://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`,
-  ssl: { rejectUnauthorized: false },
-});
+const db = require("../db/db");
 
 exports.registerUser = async (req, res) => {
   const errors = validationResult(req);
@@ -17,13 +13,14 @@ exports.registerUser = async (req, res) => {
 
   const hashedPassword = await bcrypt.hash(req.body.password, 10);
   try {
-    await pool.query(
+    await db.query(
       `INSERT INTO users (username, email, phone_number, password) 
        VALUES ($1, $2, $3, $4)`,
       [req.body.username, req.body.email, req.body.phone_number, hashedPassword]
     );
     res.status(201).json({ message: "User registered successfully" });
   } catch (error) {
+    console.error("Error registering user:", error.message);
     res.status(500).json({ message: "Internal server error" });
   }
 };
@@ -35,7 +32,7 @@ exports.loginUser = async (req, res) => {
   }
 
   try {
-    const user = await pool.query("SELECT * FROM users WHERE email = $1", [
+    const user = await db.query("SELECT * FROM users WHERE email = $1", [
       req.body.email,
     ]);
     if (
@@ -52,13 +49,14 @@ exports.loginUser = async (req, res) => {
 
     res.json({ token });
   } catch (error) {
+    console.error("Error logging in user:", error.message);
     res.status(500).json({ message: "Internal server error" });
   }
 };
 
 exports.getUserInfo = async (req, res) => {
   try {
-    const user = await pool.query(
+    const user = await db.query(
       "SELECT id, username, email, phone_number FROM users WHERE id = $1",
       [req.user.id]
     );
@@ -67,6 +65,7 @@ exports.getUserInfo = async (req, res) => {
     }
     res.json({ user: user.rows[0] });
   } catch (error) {
+    console.error("Error fetching user info:", error.message);
     res.status(500).json({ message: "Internal server error" });
   }
 };

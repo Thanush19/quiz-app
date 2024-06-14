@@ -1,10 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { BsListCheck } from "react-icons/bs"; // Importing the BsListCheck icon from React Icons
 import Questions from "./Questions";
-
+import axios from "axios"; // Import Axios for making HTTP requests
+import { backend } from "../../../constant";
+import { UserContext } from "../../context/userContext";
 const QuestionPanel = () => {
   const navigate = useNavigate();
+  const { user } = useContext(UserContext);
+
   const { quizId } = useParams();
   const quiz = Questions[quizId];
   const totalQuestions = quiz.questions.length;
@@ -13,7 +17,6 @@ const QuestionPanel = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0); // State for current question index
   const [answers, setAnswers] = useState(new Array(totalQuestions).fill("")); // State for storing answers
   const [startTime, setStartTime] = useState(new Date()); // State to store quiz start time
-  const [endTime, setEndTime] = useState(null); // State to store quiz end time
 
   const toggleMenu = () => {
     setShowMenu(!showMenu);
@@ -39,7 +42,7 @@ const QuestionPanel = () => {
     }
   };
 
-  const handleSubmitQuiz = () => {
+  const handleSubmitQuiz = async () => {
     // Calculate correct and wrong answers
     let correctCount = 0;
     let wrongCount = 0;
@@ -57,36 +60,42 @@ const QuestionPanel = () => {
 
     // Calculate total time taken
     const endTime = new Date();
-    setEndTime(endTime);
     const totalTimeTaken = (endTime - startTime) / 1000; // in seconds
 
-    // Calculate time taken for each question
-    const timeTakenForEachQuestion = quiz.questions.map((_, index) => {
-      const questionStartTime = startTime.getTime();
-      const questionEndTime = endTime.getTime();
-      const timeTaken = (questionEndTime - questionStartTime) / 1000; // in seconds
-      return {
-        questionNumber: index + 1,
-        timeTaken: timeTaken.toFixed(2), // Round to 2 decimal places
-      };
-    });
+    // Prepare quiz attempt data to be sent to backend
+    const quizAttemptData = {
+      quiz_name: quiz.testName,
+      user_id: user.id, // Replace with actual user ID (e.g., from authentication)
+      already_attended: true, // Example value, adjust as needed
+      correctly_answered: correctCount,
+      wrong_answered: wrongCount,
+      average_time_taken: totalTimeTaken / totalQuestions,
+      total_questions: totalQuestions,
+    };
 
-    // Calculate average time per question
-    const averageTimePerQuestion = totalTimeTaken / totalQuestions;
+    try {
+      // POST request to save quiz attempt data to backend
+      await axios.post(`${backend}/api/quiz-attempts`, quizAttemptData);
 
-    // Navigate to TestResult component with quiz results
-    navigate(`/quiz/${quizId}/result`, {
-      state: {
-        totalQuestions,
-        correctCount,
-        wrongCount,
-        unattemptedCount,
-        testName: quiz.testName,
-        totalTimeTaken: totalTimeTaken.toFixed(2),
-        averageTimePerQuestion: averageTimePerQuestion.toFixed(2),
-        timeTakenForEachQuestion,
-      },
-    });
+      // Navigate to TestResult component with quiz results
+      navigate(`/quiz/${quizId}/result`, {
+        state: {
+          totalQuestions,
+          correctCount,
+          wrongCount,
+          unattemptedCount,
+          testName: quiz.testName,
+          totalTimeTaken: totalTimeTaken.toFixed(2),
+          averageTimePerQuestion: (totalTimeTaken / totalQuestions).toFixed(2),
+          timeTakenForEachQuestion: quiz.questions.map((_, index) => ({
+            questionNumber: index + 1,
+            timeTaken: ((endTime - startTime) / 1000).toFixed(2),
+          })),
+        },
+      });
+    } catch (error) {
+      console.error("Error saving quiz attempt:", error);
+    }
   };
 
   return (

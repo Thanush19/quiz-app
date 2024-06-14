@@ -1,0 +1,11 @@
+CREATE TABLE quiz_attempts (
+    attempt_id SERIAL PRIMARY KEY,
+    quiz_name VARCHAR(255) NOT NULL,
+    user_id INT NOT NULL,
+    already_attended BOOLEAN NOT NULL,
+    correctly_answered INT NOT NULL,
+    wrong_answered INT NOT NULL,
+    average_time_taken NUMERIC(10, 2) NOT NULL,
+    total_questions INT NOT NULL,
+    CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(id)
+);
