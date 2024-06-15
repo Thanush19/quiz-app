@@ -6,6 +6,7 @@ import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify"; // Import toast components
 import "react-toastify/dist/ReactToastify.css"; // Import toast styles
+import { ClipLoader } from "react-spinners"; // Import a loader component
 
 function Register() {
   const navigate = useNavigate();
@@ -18,6 +19,7 @@ function Register() {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
+  const [isLoading, setIsLoading] = useState(false); // State for managing loader
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -75,6 +77,8 @@ function Register() {
       return;
     }
 
+    setIsLoading(true); // Start loading
+
     try {
       const { firstName, lastName, phoneNumber, ...rest } = formData;
       const payload = {
@@ -96,16 +100,18 @@ function Register() {
         error.response?.data || error.message
       );
       toast.error("Registration failed. Please try again."); // Error toast notification
+    } finally {
+      setIsLoading(false); // Stop loading
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded shadow-md w-full max-w-sm">
-        <h2 className="text-2xl font-bold mb-6 text-gray-900">Register</h2>
+        <h2 className="text-2xl font-bold mb-6 text-violet-700 ">Register</h2>
         <form onSubmit={handleRegister}>
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
+            <label className="block text-violet-700 text-sm font-bold mb-2">
               Username
             </label>
             <input
@@ -113,7 +119,7 @@ function Register() {
               name="username"
               value={formData.username}
               onChange={handleChange}
-              className={`w-full px-3 py-2 border rounded text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-600 ${
+              className={`w-full px-3 py-2 border rounded text-violet-700 focus:outline-none focus:ring-2 focus:ring-blue-600 ${
                 errors.username ? "border-red-500" : ""
               }`}
             />
@@ -123,7 +129,7 @@ function Register() {
           </div>
 
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
+            <label className="block text-violet-700 text-sm font-bold mb-2">
               Email
             </label>
             <input
@@ -131,7 +137,7 @@ function Register() {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className={`w-full px-3 py-2 border rounded text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-600 ${
+              className={`w-full px-3 py-2 border rounded text-violet-700 focus:outline-none focus:ring-2 focus:ring-blue-600 ${
                 errors.email ? "border-red-500" : ""
               }`}
             />
@@ -141,7 +147,7 @@ function Register() {
           </div>
 
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
+            <label className="block text-violet-700 text-sm font-bold mb-2">
               Phone Number
             </label>
             <input
@@ -149,7 +155,7 @@ function Register() {
               name="phoneNumber"
               value={formData.phoneNumber}
               onChange={handleChange}
-              className={`w-full px-3 py-2 border rounded text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-600 ${
+              className={`w-full px-3 py-2 border rounded text-violet-700 focus:outline-none focus:ring-2 focus:ring-blue-600 ${
                 errors.phoneNumber ? "border-red-500" : ""
               }`}
             />
@@ -159,7 +165,7 @@ function Register() {
           </div>
 
           <div className="mb-4 relative">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
+            <label className="block text-violet-700 text-sm font-bold mb-2">
               Password
             </label>
             <input
@@ -167,14 +173,14 @@ function Register() {
               name="password"
               value={formData.password}
               onChange={handleChange}
-              className={`w-full px-3 py-2 border rounded text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-600 ${
+              className={`w-full px-3 py-2 border rounded text-violet-700 focus:outline-none focus:ring-2 focus:ring-blue-600 ${
                 errors.password ? "border-red-500" : ""
               }`}
             />
             <FontAwesomeIcon
               icon={showPassword ? faEyeSlash : faEye}
               onClick={toggleShowPassword}
-              className="absolute right-3 top-9 cursor-pointer text-gray-700"
+              className="absolute right-3 top-9 cursor-pointer text-violet-700"
             />
             {errors.password && (
               <p className="text-red-500 text-sm mt-1">{errors.password}</p>
@@ -182,15 +188,21 @@ function Register() {
           </div>
 
           <div className="flex items-center justify-between mb-4">
-            <button
-              type="submit"
-              className="bg-violet-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
-            >
-              Register
-            </button>
+            {isLoading ? (
+              <div className="flex justify-center w-full">
+                <ClipLoader size={35} color={"#4A90E2"} loading={isLoading} />
+              </div>
+            ) : (
+              <button
+                type="submit"
+                className="bg-violet-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
+              >
+                Register
+              </button>
+            )}
             <span
               onClick={() => navigate("/login")}
-              className="text-sm text-blue-500 cursor-pointer hover:underline"
+              className="text-sm text-violet-700 cursor-pointer hover:underline"
             >
               Already have an account? Login
             </span>
