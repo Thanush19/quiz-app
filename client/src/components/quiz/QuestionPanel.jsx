@@ -197,7 +197,7 @@ const QuestionPanel = () => {
               {quiz.questions.map((question, index) => (
                 <div
                   key={index}
-                  className={`flex items-center p-2 md:w-[14rem]  ${
+                  className={`flex items-center p-2 md:w-[10rem]  ${
                     markedForReview[index] ? "bg-yellow-100" : ""
                   }`}
                 >
