@@ -5,6 +5,7 @@ import { Chart as ChartJS, ArcElement, Legend } from "chart.js";
 import { UserContext } from "../context/userContext";
 import { backend } from "../../constant";
 import ThreeDimScatterChart from "./ThreeDimScatterChart";
+import Sidebar from "./common/Sidebar";
 
 ChartJS.register(ArcElement, Legend);
 
@@ -105,77 +106,87 @@ const Profile = () => {
   }, [quizAttempts]);
 
   return (
-    <div>
-      <h1 className="text-center text-2xl text-violet-400 font-bold mb-4">
-        Profile Overview
-      </h1>
-      {loading ? (
-        <p>Loading quiz data...</p>
-      ) : (
-        <div className="flex flex-col md:flex-row justify-around items-center">
-          {correctData.datasets && (
-            <div className="bg-white p-4 m-2 shadow-md w-[50%] md:w-80">
-              <h2 className="text-center text-xl font-semibold text-violet-400  mb-2">
-                Correct Answers (%)
-              </h2>
-              <Doughnut
-                data={correctData}
-                options={{
-                  plugins: {
-                    tooltip: {
-                      callbacks: {
-                        label: function (tooltipItem, data) {
-                          return `${data.labels[tooltipItem.index]}: ${
-                            data.datasets[0].data[tooltipItem.index]
-                          }%`;
+    <>
+      <div className="flex">
+        <Sidebar />
+
+        <div className="flex-grow">
+          <h1 className="text-center text-2xl text-violet-400 font-bold mb-4">
+            Profile Overview
+          </h1>
+          {loading ? (
+            <p>Loading quiz data...</p>
+          ) : (
+            <div className="flex flex-col items-center">
+              <div className="flex flex-col md:flex-row justify-around items-center w-full">
+                {correctData.datasets && (
+                  <div className="bg-white p-4 m-2 shadow-md w-[90%] md:w-80">
+                    <h2 className="text-center text-xl font-semibold text-violet-400  mb-2">
+                      Correct Answers (%)
+                    </h2>
+                    <Doughnut
+                      data={correctData}
+                      options={{
+                        plugins: {
+                          tooltip: {
+                            callbacks: {
+                              label: function (tooltipItem, data) {
+                                return `${data.labels[tooltipItem.index]}: ${
+                                  data.datasets[0].data[tooltipItem.index]
+                                }%`;
+                              },
+                            },
+                          },
+                          legend: {
+                            display: false,
+                          },
                         },
-                      },
-                    },
-                    legend: {
-                      display: false,
-                    },
-                  },
-                }}
-              />
-            </div>
-          )}
-          {wrongData.datasets && (
-            <div className="bg-white p-4 m-2 shadow-md w-[50%] md:w-80">
-              <h2 className="text-center text-violet-400  text-xl font-semibold mb-2">
-                Wrong Answers (%)
-              </h2>
-              <Doughnut
-                data={wrongData}
-                options={{
-                  plugins: {
-                    tooltip: {
-                      callbacks: {
-                        label: function (tooltipItem, data) {
-                          return `${data.labels[tooltipItem.index]}: ${
-                            data.datasets[0].data[tooltipItem.index]
-                          }%`;
+                      }}
+                    />
+                  </div>
+                )}
+                {wrongData.datasets && (
+                  <div className="bg-white p-4 m-2 shadow-md w-[90%] md:w-80">
+                    <h2 className="text-center text-violet-400  text-xl font-semibold mb-2">
+                      Wrong Answers (%)
+                    </h2>
+                    <Doughnut
+                      data={wrongData}
+                      options={{
+                        plugins: {
+                          tooltip: {
+                            callbacks: {
+                              label: function (tooltipItem, data) {
+                                return `${data.labels[tooltipItem.index]}: ${
+                                  data.datasets[0].data[tooltipItem.index]
+                                }%`;
+                              },
+                            },
+                          },
+                          legend: {
+                            display: false,
+                          },
                         },
-                      },
-                    },
-                    legend: {
-                      display: false,
-                    },
-                  },
-                }}
-              />
-            </div>
-          )}
-          {averageTimeData.length > 0 && (
-            <div className="bg-white p-4 m-2 shadow-md w-[50%] md:w-80">
-              <h2 className="text-center text-violet-400  text-xl font-semibold mb-2">
-                Average Time Taken (in sec)
-              </h2>
-              <ThreeDimScatterChart data={averageTimeData} />
+                      }}
+                    />
+                  </div>
+                )}
+              </div>
+              {averageTimeData.length > 0 && (
+                <div className="flex justify-center w-full">
+                  <div className="bg-white p-4 m-2 shadow-md w-[90%] md:w-80">
+                    <h2 className="text-center text-violet-400  text-xl font-semibold mb-2">
+                      Average Time Taken (in sec)
+                    </h2>
+                    <ThreeDimScatterChart data={averageTimeData} />
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </div>
-      )}
-    </div>
+      </div>
+    </>
   );
 };
 

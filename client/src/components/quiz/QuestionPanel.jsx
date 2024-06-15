@@ -1,25 +1,29 @@
 import React, { useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { BsListCheck } from "react-icons/bs"; // Importing the BsListCheck icon from React Icons
+import { BsListCheck, BsArrowLeft, BsArrowRight } from "react-icons/bs"; // Importing icons
 import Questions from "./Questions";
-import axios from "axios"; // Import Axios for making HTTP requests
+import axios from "axios";
 import { backend } from "../../../constant";
 import { UserContext } from "../../context/userContext";
+
 const QuestionPanel = () => {
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
-
   const { quizId } = useParams();
   const quiz = Questions[quizId];
   const totalQuestions = quiz.questions.length;
 
-  const [showMenu, setShowMenu] = useState(false); // State for menu visibility
+  const [anchorEl, setAnchorEl] = useState(null); // State for dropdown menu anchor
   const [currentQuestion, setCurrentQuestion] = useState(0); // State for current question index
   const [answers, setAnswers] = useState(new Array(totalQuestions).fill("")); // State for storing answers
+  const [answeredStatus, setAnsweredStatus] = useState(
+    new Array(totalQuestions).fill(false)
+  ); // State to track if question is answered
+
   const [startTime, setStartTime] = useState(new Date()); // State to store quiz start time
 
-  const toggleMenu = () => {
-    setShowMenu(!showMenu);
+  const handleMenuClick = (event) => {
+    setAnchorEl(anchorEl ? null : event.currentTarget); // Toggle dropdown menu
   };
 
   const handleOptionChange = (event) => {
@@ -28,6 +32,11 @@ const QuestionPanel = () => {
     const newAnswers = [...answers];
     newAnswers[questionIndex] = value;
     setAnswers(newAnswers);
+
+    // Update answered status for this question
+    const newAnsweredStatus = [...answeredStatus];
+    newAnsweredStatus[questionIndex] = true;
+    setAnsweredStatus(newAnsweredStatus);
   };
 
   const handleNextQuestion = () => {
@@ -39,6 +48,19 @@ const QuestionPanel = () => {
   const handlePreviousQuestion = () => {
     if (currentQuestion > 0) {
       setCurrentQuestion(currentQuestion - 1);
+    }
+  };
+
+  const handleEndTest = () => {
+    const confirmEndTest = window.confirm(
+      "Are you sure you want to end the test?"
+    );
+
+    if (confirmEndTest) {
+      // Perform cleanup or additional actions if needed before navigating away
+
+      // Redirect to "/"
+      navigate("/");
     }
   };
 
@@ -99,46 +121,63 @@ const QuestionPanel = () => {
   };
 
   return (
-    <>
-      <div className="w-full h-16 bg-gray-100 flex items-center justify-between px-4">
+    <div className="flex flex-col h-screen relative">
+      <div className="h-[10%] m-4 rounded-xl bg-white flex items-center justify-between px-4 relative">
         {/* Menu Icon */}
         <button
-          className="text-gray-600 hover:text-gray-800 focus:outline-none"
-          onClick={toggleMenu}
+          className="text-gray- bg-blue-100 p-2 rounded-lg mr-3 hover:text-gray-800 focus:outline-none relative"
+          onClick={handleMenuClick}
         >
-          <BsListCheck className="h-6 w-6" /> {/* Using BsListCheck icon */}
+          <BsListCheck className="h-6 w-6" />
+          {anchorEl && (
+            <div className="absolute bg-white mt-2 shadow-lg rounded-lg border border-gray-200">
+              {quiz.questions.map((question, index) => (
+                <div key={index} className="flex items-center p-2 md:w-[8rem]">
+                  <label
+                    htmlFor={`question_${index}`}
+                    className={`ml-1 cursor-pointer ${
+                      answeredStatus[index] ? "text-green-500" : "text-gray-500"
+                    }`}
+                  >
+                    <span className="font-bold">{index + 1} Mcq</span>
+                  </label>
+                  <input
+                    type="checkbox"
+                    id={`question_${index}`}
+                    checked={answeredStatus[index]}
+                    className="appearance-none w-4 h-4 rounded-full border ml-8 border-gray-300 checked:bg-green-500 checked:border-transparent focus:outline-none focus:ring-2 focus:ring-green-500"
+                    readOnly
+                  />
+                </div>
+              ))}
+            </div>
+          )}
         </button>
 
-        {/* Menu Content */}
-        {showMenu && (
-          <div className="ml-2 flex items-center space-x-2">
-            {quiz.questions.map((question, index) => (
-              <div key={index} className="flex items-center">
-                <input
-                  type="checkbox"
-                  id={`question_${index}`}
-                  checked={answers[index] !== ""}
-                  className="rounded-full h-4 w-4 border-gray-300 focus:ring-gray-400"
-                  readOnly
-                />
-                <label
-                  htmlFor={`question_${index}`}
-                  className="ml-1 cursor-pointer"
-                >
-                  {index + 1}
-                </label>
-              </div>
-            ))}
-          </div>
+        {/* Previous Button */}
+        {currentQuestion > 0 && (
+          <button
+            className="text-gray-600 hover:text-gray-800 bg-blue-100 p-3 rounded-xl focus:outline-none"
+            onClick={handlePreviousQuestion}
+          >
+            <BsArrowLeft className="h-5 w-5 ml-1" />
+          </button>
         )}
+
+        {/* End Test Button */}
+        <button
+          className="ml-auto text-gray-600  bg-blue-100 p-4 rounded-xl hover:text-gray-800 focus:outline-none"
+          onClick={handleEndTest}
+        >
+          End Test
+        </button>
       </div>
 
       {/* Body */}
-      <div className="w-[95%] h-[90%] m-5 self-start rounded-lg p-5">
-        <h1 className="text-3xl font-bold mb-4">{quiz.testName}</h1>
-        <div className="h-screen flex items-center justify-center">
+      <div className="flex-1 p-2 ">
+        <div className="h-full flex items-center justify-center">
           {/* Questions Section */}
-          <div className="w-[40%] h-[80%] bg-white ">
+          <div className="w-[50%] h-[95%] bg-white p-10 ">
             <h2 className="text-lg font-bold">
               Question No: {currentQuestion + 1}
             </h2>
@@ -148,13 +187,16 @@ const QuestionPanel = () => {
           </div>
 
           {/* Answer Section */}
-          <div className="bg-white ml-4 w-[70%] h-[80%] flex justify-center items-center">
-            <ul className="mt-[10%]">
-              <h1>Select the correct answer</h1>
+          <div className="bg-white ml-4 w-[70%] h-[95%] flex p-6 ">
+            <ul className="mt-[1rem]">
+              <h2 className="text-lg font-bold">Select the Correct answer</h2>
 
               {quiz.questions[currentQuestion].options.map((option, oIndex) => (
-                <li key={oIndex} className="ml-4 mb-2">
-                  <label className="flex items-center">
+                <li
+                  key={oIndex}
+                  className="ml-4 mb-2 border border-gray-300 rounded-2xl p-2 mt-6"
+                >
+                  <label className="">
                     <input
                       type="radio"
                       name={`question_${currentQuestion}`}
@@ -172,36 +214,40 @@ const QuestionPanel = () => {
       </div>
 
       {/* Footer */}
-      <div className="w-full h-16 bg-gray-100 flex items-center justify-between px-4">
+      <div className="h-[10%] m-4  rounded-xl bg-white flex items-center justify-between px-4 relative">
         {/* Previous Button */}
         {currentQuestion > 0 && (
           <button
-            className="text-gray-600 hover:text-gray-800 focus:outline-none"
+            className="text-violet-600 border flex bg-blue-100 rounded-2xl p-4 hover:text-gray-800 focus:outline-none"
             onClick={handlePreviousQuestion}
           >
-            Previous
+            <spa>
+              <BsArrowLeft className="h-5 w-5 ml-1" />
+            </spa>
           </button>
         )}
 
         {/* Submit Button */}
         <button
-          className="text-gray-600 hover:text-gray-800 focus:outline-none"
+          className="text-violet-600 border flex bg-blue-100 rounded-2xl p-4 hover:text-gray-800 focus:outline-none"
           onClick={handleSubmitQuiz}
         >
-          Submit
+          Save & Submit
         </button>
 
         {/* Next Button */}
         {currentQuestion < totalQuestions - 1 && (
           <button
-            className="text-gray-600 hover:text-gray-800 focus:outline-none"
+            className="text-violet-600 border flex bg-blue-100 rounded-2xl p-4 hover:text-gray-800 focus:outline-none"
             onClick={handleNextQuestion}
           >
-            Next
+            <spa>
+              <BsArrowRight className="h-5 w-5 ml-1" />
+            </spa>
           </button>
         )}
       </div>
-    </>
+    </div>
   );
 };
 

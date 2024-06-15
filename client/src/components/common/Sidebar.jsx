@@ -6,11 +6,15 @@ import { UserContext } from "../../context/userContext";
 
 const Sidebar = () => {
   const nav = useNavigate();
-  const { user } = useContext(UserContext); // Access user context to get user_id
-
+  const { user } = useContext(UserContext);
   const goToProfile = () => {
     if (user) {
-      nav(`/profile/${user.id}`); // Replace user.user_id with actual property name
+      nav(`/profile/${user.id}`);
+    }
+  };
+  const goToTest = () => {
+    if (user) {
+      nav("/");
     }
   };
 
@@ -26,8 +30,8 @@ const Sidebar = () => {
       <div className="flex-grow flex flex-col justify-center items-center">
         <button onClick={goToProfile}>Profile</button>
       </div>
-      <div className="p-4 flex justify-end">
-        <p className="text-xs text-gray-500">Bottom Right</p>
+      <div className="flex-grow flex flex-col justify-center items-center">
+        <button onClick={goToTest}>Test</button>
       </div>
     </div>
   );
