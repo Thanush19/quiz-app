@@ -13,7 +13,6 @@ const Home = () => {
 
   return (
     <div className="flex h-screen">
-      {/* Sidebar */}
       <div
         className={`md:w-[20%] md:block fixed inset-y-0 left-0 z-50 bg-white overflow-y-auto overflow-x-hidden ${
           sidebarOpen ? "block" : "hidden"
@@ -22,15 +21,13 @@ const Home = () => {
         <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
       </div>
 
-      {/* Hamburger menu for screens less than md */}
       <div className={`md:hidden ${sidebarOpen ? "hidden" : "block"}`}>
         <button onClick={toggleSidebar} className="p-4">
           <BsListNested size={24} />
         </button>
       </div>
 
-      {/* Main content area */}
-      <div className="flex flex-col flex-grow ml-[20%] md:ml-0">
+      <div className="flex flex-col flex-grow    md:ml-0">
         <Topbar />
         <AttendQuiz />
       </div>

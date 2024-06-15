@@ -31,7 +31,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
 
   return (
     <div
-      className={`h-screen w-full md:w-[20%] bg-white rounded-r-xl ${
+      className={`h-screen  w-[50%] md:w-[20%] bg-white rounded-r-xl ${
         isOpen ? "block" : "hidden"
       } md:block`}
     >
