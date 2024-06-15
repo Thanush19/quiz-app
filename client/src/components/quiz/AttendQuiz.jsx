@@ -63,20 +63,20 @@ const AttendQuiz = () => {
       {currentQuizzes.map((quiz, index) => (
         <div
           key={index}
-          className={`mb-4 p-4 flex bg-white rounded-lg border-l-4 border-violet-500`}
+          className="mb-4 p-4 flex flex-col md:flex-row bg-white rounded-lg border-l-4 border-violet-500"
         >
-          <div className="w-[60%]">
+          <div className="w-full md:w-[60%]">
             <h1 className="text-2xl font-bold mb-2">{quiz.testName}</h1>
-            <div className="flex">
-              <p className="text-lg font-semibold  ml-2">
-                Number of Questions: {quiz.numberOfQuestions}
+            <div className="flex flex-col md:flex-row">
+              <p className="md:text-lg font-semibold mb-2 md:mb-0 ml-2">
+                Total Questions: {quiz.numberOfQuestions}
               </p>
-              <p className="text-lg font-semibold ml-2">
+              <p className="md:text-lg font-semibold ml-2">
                 Total Marks: {quiz.totalMarks}
               </p>
             </div>
           </div>
-          <div className="my-auto mx-auto border hover:bg-yellow-400 hover:text-black  rounded-lg">
+          <div className="mt-2 md:mt-0 my-auto mx-auto md:ml-auto border hover:bg-yellow-400 hover:text-black rounded-lg">
             <button
               className="text-violet-500 p-2"
               onClick={() => handleStartQuiz(indexOfFirstQuiz + index)}
