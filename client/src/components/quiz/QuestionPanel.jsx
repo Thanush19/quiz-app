@@ -122,10 +122,10 @@ const QuestionPanel = () => {
 
   return (
     <div className="flex flex-col h-screen relative">
-      <div className="h-[10%] m-4 rounded-xl bg-white flex items-center justify-between px-4 relative">
+      <div className="h-[15%] m-4 rounded-xl bg-white flex items-center justify-between px-4 relative">
         {/* Menu Icon */}
         <button
-          className="text-gray- bg-blue-100 p-2 rounded-lg mr-3 hover:text-gray-800 focus:outline-none relative"
+          className="text-gray- bg-blue-100 p-3 m-3 rounded-lg mr-3 hover:text-gray-800 focus:outline-none relative"
           onClick={handleMenuClick}
         >
           <BsListCheck className="h-6 w-6" />
@@ -145,7 +145,7 @@ const QuestionPanel = () => {
                     type="checkbox"
                     id={`question_${index}`}
                     checked={answeredStatus[index]}
-                    className="appearance-none w-4 h-4 rounded-full border ml-8 border-gray-300 checked:bg-green-500 checked:border-transparent focus:outline-none focus:ring-2 focus:ring-green-500"
+                    className="appearance-none w-4 h-4 m-3 p-3 rounded-full border ml-8 border-gray-300 checked:bg-green-500 checked:border-transparent focus:outline-none focus:ring-2 focus:ring-green-500"
                     readOnly
                   />
                 </div>
@@ -166,7 +166,7 @@ const QuestionPanel = () => {
 
         {/* End Test Button */}
         <button
-          className="ml-auto text-gray-600  bg-blue-100 p-4 rounded-xl hover:text-gray-800 focus:outline-none"
+          className="ml-auto text-gray-600  bg-blue-100 p-2 rounded-xl hover:text-gray-800 focus:outline-none"
           onClick={handleEndTest}
         >
           End Test
@@ -175,9 +175,9 @@ const QuestionPanel = () => {
 
       {/* Body */}
       <div className="flex-1 p-2 ">
-        <div className="h-full flex items-center justify-center">
+        <div className="h-full flex items-center md:flex-row flex-col justify-center">
           {/* Questions Section */}
-          <div className="w-[50%] h-[95%] bg-white p-10 ">
+          <div className="md:w-[50%] md:h-[95%] w-[80%] h-[30%] mb-2 rounded-xl bg-white p-10 ">
             <h2 className="text-lg font-bold">
               Question No: {currentQuestion + 1}
             </h2>
@@ -187,14 +187,14 @@ const QuestionPanel = () => {
           </div>
 
           {/* Answer Section */}
-          <div className="bg-white ml-4 w-[70%] h-[95%] flex p-6 ">
-            <ul className="mt-[1rem]">
+          <div className="md:w-[50%] md:h-[95%] w-[80%] h-[60%] mb-2 rounded-xl bg-white p-10 ">
+            <ul className="md:mt-[1rem]">
               <h2 className="text-lg font-bold">Select the Correct answer</h2>
 
               {quiz.questions[currentQuestion].options.map((option, oIndex) => (
                 <li
                   key={oIndex}
-                  className="ml-4 mb-2 border border-gray-300 rounded-2xl p-2 mt-6"
+                  className="ml-4 mb-2 border border-gray-300 rounded-2xl p-2 md:mt-6"
                 >
                   <label className="">
                     <input
@@ -214,22 +214,21 @@ const QuestionPanel = () => {
       </div>
 
       {/* Footer */}
-      <div className="h-[10%] m-4  rounded-xl bg-white flex items-center justify-between px-4 relative">
+      <div className="h-[15%] m-4  rounded-xl bg-white flex items-center justify-between px-4 relative">
         {/* Previous Button */}
         {currentQuestion > 0 && (
           <button
-            className="text-violet-600 border flex bg-blue-100 rounded-2xl p-4 hover:text-gray-800 focus:outline-none"
+            className="text-violet-600 border flex bg-blue-100 rounded-2xl m-1 hover:text-gray-800 focus:outline-none"
             onClick={handlePreviousQuestion}
           >
-            <spa>
+            <span>
               <BsArrowLeft className="h-5 w-5 ml-1" />
-            </spa>
+            </span>
           </button>
         )}
 
-        {/* Submit Button */}
         <button
-          className="text-violet-600 border flex bg-blue-100 rounded-2xl p-4 hover:text-gray-800 focus:outline-none"
+          className="text-gray- bg-blue-100 p-3 m-3 rounded-lg mr-3 hover:text-gray-800 focus:outline-none relative"
           onClick={handleSubmitQuiz}
         >
           Save & Submit
@@ -238,12 +237,12 @@ const QuestionPanel = () => {
         {/* Next Button */}
         {currentQuestion < totalQuestions - 1 && (
           <button
-            className="text-violet-600 border flex bg-blue-100 rounded-2xl p-4 hover:text-gray-800 focus:outline-none"
+            className="text-violet-600 border flex bg-blue-100 rounded-2xl m-1 hover:text-gray-800 focus:outline-none"
             onClick={handleNextQuestion}
           >
-            <spa>
+            <span>
               <BsArrowRight className="h-5 w-5 ml-1" />
-            </spa>
+            </span>
           </button>
         )}
       </div>

@@ -1,11 +1,12 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const AttendQuiz = () => {
+  const navigate = useNavigate();
+
   const handleStartQuiz = (quizId) => {
-    // Redirect to /test/:quizId route
-    // For simplicity, assuming quizzes have unique ids based on their index
-    // quizId is the index of the quiz in the quizzes array
-    window.location.href = `/test/${quizId}`;
+    // Redirect to /test/:quizId route using react-router's navigate function
+    navigate(`/test/${quizId}`);
   };
 
   const quizzes = [
