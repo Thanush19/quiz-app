@@ -1,19 +1,27 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { Doughnut } from "react-chartjs-2";
-import { Chart as ChartJS, ArcElement, Legend } from "chart.js";
+import { Chart as ChartJS, ArcElement, Legend, Tooltip } from "chart.js";
 import { UserContext } from "../context/userContext";
 import { backend } from "../../constant";
-import ThreeDimScatterChart from "./ThreeDimScatterChart";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip as RechartsTooltip,
+  Legend as RechartsLegend,
+  ResponsiveContainer,
+} from "recharts";
 import Sidebar from "./common/Sidebar";
 
-ChartJS.register(ArcElement, Legend);
+ChartJS.register(ArcElement, Legend, Tooltip);
 
 const Profile = () => {
   const { user, logout } = useContext(UserContext);
   const [quizAttempts, setQuizAttempts] = useState([]);
-  const [correctData, setCorrectData] = useState({});
-  const [wrongData, setWrongData] = useState({});
+  const [chartData, setChartData] = useState(null);
   const [averageTimeData, setAverageTimeData] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -59,46 +67,41 @@ const Profile = () => {
         (wrongAnswers / totalQuestionsAttempted) *
         100
       ).toFixed(2);
+      const remainingPercentage = (
+        100 -
+        correctPercentage -
+        wrongPercentage
+      ).toFixed(2);
 
-      setCorrectData({
-        labels: ["Correct Percentage", "Total Questions"],
+      setChartData({
+        labels: [
+          "Correct Percentage",
+          "Wrong Percentage",
+          "Remaining Percentage",
+        ],
         datasets: [
           {
-            label: "Correct Percentage",
-            data: [correctPercentage, 100 - correctPercentage],
+            label: "Quiz Data",
+            data: [correctPercentage, wrongPercentage, remainingPercentage],
             backgroundColor: [
               "rgba(75, 192, 192, 0.6)",
-              "rgba(211, 211, 211, 0.6)",
-            ],
-            borderColor: ["rgba(75, 192, 192, 1)", "rgba(211, 211, 211, 1)"],
-            borderWidth: 1,
-          },
-        ],
-      });
-
-      const wrongPercentageValue = parseFloat(wrongPercentage);
-      const remainingPercentage = 100 - wrongPercentageValue;
-
-      setWrongData({
-        labels: ["Wrong Percentage"],
-        datasets: [
-          {
-            label: "Wrong Percentage",
-            data: [wrongPercentageValue, remainingPercentage],
-            backgroundColor: [
               "rgba(255, 99, 132, 0.6)",
               "rgba(211, 211, 211, 0.6)",
             ],
-            borderColor: ["rgba(255, 99, 132, 1)", "rgba(211, 211, 211, 1)"],
+            borderColor: [
+              "rgba(75, 192, 192, 1)",
+              "rgba(255, 99, 132, 1)",
+              "rgba(211, 211, 211, 1)",
+            ],
             borderWidth: 1,
           },
         ],
       });
 
       const averageTimeChartData = quizAttempts.map((attempt, index) => ({
-        x: index + 1,
-        y: parseFloat(attempt.average_time_taken),
-        z: parseFloat(attempt.correctly_answered),
+        name: `Attempt ${index + 1}`,
+        uv: parseFloat(attempt.average_time_taken),
+        pv: parseFloat(attempt.correctly_answered),
       }));
 
       setAverageTimeData(averageTimeChartData);
@@ -112,12 +115,12 @@ const Profile = () => {
 
         <div className="flex-grow">
           <div className="flex justify-between items-center">
-            <h1 className="text-center text-2xl text-violet-400 font-bold mb-4">
+            <h1 className="text-center text-2xl mx-auto mt-20 text-violet-400 font-bold mb-4">
               Profile Overview
             </h1>
             <button
               onClick={logout}
-              className="text-white bg-red-500 hover:bg-red-700 px-4 py-2 rounded ml-4"
+              className="text-white bg-red-500 md:mr-10 hover:bg-red-700 px-4 py-2 rounded ml-4"
             >
               Logout
             </button>
@@ -125,68 +128,76 @@ const Profile = () => {
           {loading ? (
             <p>Loading quiz data...</p>
           ) : (
-            <div className="flex flex-col items-center">
-              <div className="flex flex-col md:flex-row justify-around items-center w-full">
-                {correctData.datasets && (
-                  <div className="bg-white p-4 m-2 shadow-md w-[90%] md:w-80">
-                    <h2 className="text-center text-xl font-semibold text-violet-400  mb-2">
-                      Correct Answers (%)
-                    </h2>
+            <div className="flex flex-col md:ml-[10%] md:flex-row items-center">
+              <div className="bg-white p-4 m-2 shadow-md w-[90%] md:w-80">
+                <h2 className="text-center text-xl font-semibold  text-violet-400 mb-2">
+                  Quiz Performance
+                </h2>
+                {chartData && (
+                  <ResponsiveContainer width="100%" height={400}>
                     <Doughnut
-                      data={correctData}
+                      data={chartData}
                       options={{
                         plugins: {
                           tooltip: {
                             callbacks: {
                               label: function (tooltipItem, data) {
-                                return `${data.labels[tooltipItem.index]}: ${
-                                  data.datasets[0].data[tooltipItem.index]
+                                return `${
+                                  data.labels[tooltipItem.dataIndex]
+                                }: ${
+                                  data.datasets[0].data[tooltipItem.dataIndex]
                                 }%`;
                               },
                             },
                           },
                           legend: {
-                            display: false,
+                            display: true,
+                            position: "bottom",
                           },
                         },
                       }}
                     />
-                  </div>
-                )}
-                {wrongData.datasets && (
-                  <div className="bg-white p-4 m-2 shadow-md w-[90%] md:w-80">
-                    <h2 className="text-center text-violet-400  text-xl font-semibold mb-2">
-                      Wrong Answers (%)
-                    </h2>
-                    <Doughnut
-                      data={wrongData}
-                      options={{
-                        plugins: {
-                          tooltip: {
-                            callbacks: {
-                              label: function (tooltipItem, data) {
-                                return `${data.labels[tooltipItem.index]}: ${
-                                  data.datasets[0].data[tooltipItem.index]
-                                }%`;
-                              },
-                            },
-                          },
-                          legend: {
-                            display: false,
-                          },
-                        },
-                      }}
-                    />
-                  </div>
+                  </ResponsiveContainer>
                 )}
               </div>
               {averageTimeData.length > 0 && (
                 <div className="flex justify-center w-full">
                   <div className="bg-white p-4 m-2 shadow-md w-[90%] md:w-80">
-                    <h2 className="text-center text-violet-400  text-xl font-semibold mb-2">
+                    <h2 className="text-center text-violet-400 text-xl font-semibold mb-2">
                       Average Time Taken (in sec)
                     </h2>
-                    <ThreeDimScatterChart data={averageTimeData} />
+                    <ResponsiveContainer width="100%" height={400}>
+                      <LineChart
+                        width={500}
+                        height={400}
+                        data={averageTimeData}
+                        syncId="anyId"
+                        margin={{
+                          top: 10,
+                          right: 30,
+                          left: 0,
+                          bottom: 0,
+                        }}
+                      >
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="name" />
+                        <YAxis />
+                        <RechartsTooltip />
+                        <Legend />
+                        <Line
+                          type="monotone"
+                          dataKey="uv"
+                          stroke="#8884d8"
+                          fill="#8884d8"
+                        />
+                        <Line
+                          type="monotone"
+                          dataKey="pv"
+                          stroke="#82ca9d"
+                          fill="#82ca9d"
+                        />
+                      </LineChart>
+                    </ResponsiveContainer>
                   </div>
                 </div>
               )}
