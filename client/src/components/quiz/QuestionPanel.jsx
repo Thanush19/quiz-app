@@ -10,7 +10,14 @@ import Questions from "./Questions";
 import axios from "axios";
 import { backend } from "../../../constant";
 import { UserContext } from "../../context/userContext";
-import Modal from "./end test/Model";
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Button,
+} from "@mui/material"; // Import MUI components
 
 const QuestionPanel = () => {
   const navigate = useNavigate();
@@ -19,6 +26,7 @@ const QuestionPanel = () => {
   const quiz = Questions[quizId];
   const totalQuestions = quiz.questions.length;
   const [openModal, setOpenModal] = useState(false);
+  const [openSubmitModal, setOpenSubmitModal] = useState(false);
 
   const [anchorEl, setAnchorEl] = useState(null); // State for dropdown menu anchor
   const [currentQuestion, setCurrentQuestion] = useState(0); // State for current question index
@@ -70,19 +78,29 @@ const QuestionPanel = () => {
   };
 
   const handleEndTest = () => {
-    const confirmEndTest = window.confirm(
-      "Are you sure you want to end the test?"
-    );
-
-    if (confirmEndTest) {
-      // Perform cleanup or additional actions if needed before navigating away
-
-      // Redirect to "/"
-      navigate("/");
-    }
+    setOpenModal(true);
   };
 
-  const handleSubmitQuiz = async () => {
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
+
+  const handleConfirmEndTest = () => {
+    setOpenModal(false);
+    navigate("/");
+  };
+
+  const handleSubmitQuiz = () => {
+    setOpenSubmitModal(true);
+  };
+
+  const handleCloseSubmitModal = () => {
+    setOpenSubmitModal(false);
+  };
+
+  const handleConfirmSubmitQuiz = async () => {
+    setOpenSubmitModal(false);
+
     // Calculate correct and wrong answers
     let correctCount = 0;
     let wrongCount = 0;
@@ -237,7 +255,7 @@ const QuestionPanel = () => {
       </div>
 
       {/* Footer */}
-      <div className="h-[15%] md:h-[10%]  m-4  rounded-xl bg-white flex items-center justify-between px-4 relative">
+      <div className="h-[15%] md:h-[10%] m-4 rounded-xl bg-white flex items-center justify-between px-4 relative">
         {/* Previous Button */}
         {currentQuestion > 0 && (
           <button
@@ -252,7 +270,7 @@ const QuestionPanel = () => {
 
         {/* Submit Button */}
         <button
-          className="text-gray- bg-blue-100 p-3 md :rounded-lg mr-3 hover:text-gray-800 focus:outline-none relative"
+          className="text-gray- bg-blue-100 p-3 md:rounded-lg mr-3 hover:text-gray-800 focus:outline-none relative"
           onClick={handleSubmitQuiz}
         >
           Save & Submit
@@ -270,6 +288,44 @@ const QuestionPanel = () => {
           </button>
         )}
       </div>
+
+      {/* Confirmation Modal */}
+      <Dialog open={openModal} onClose={handleCloseModal}>
+        <DialogTitle>End Test</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            If you end the test now, your score will not be considered. Are you
+            sure you want to leave?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseModal} color="primary">
+            No
+          </Button>
+          <Button onClick={handleConfirmEndTest} color="primary" autoFocus>
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Submit Confirmation Modal */}
+      <Dialog open={openSubmitModal} onClose={handleCloseSubmitModal}>
+        <DialogTitle>Submit Quiz</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to submit the quiz? Once submitted, your
+            answers will be final.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseSubmitModal} color="primary">
+            No
+          </Button>
+          <Button onClick={handleConfirmSubmitQuiz} color="primary" autoFocus>
+            Yes, Submit
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

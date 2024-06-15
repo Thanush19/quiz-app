@@ -1,13 +1,37 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../../context/userContext";
+import { backend } from "../../../constant.js";
+import axios from "axios";
 
 const AttendQuiz = () => {
+  const { user, logout } = useContext(UserContext);
   const navigate = useNavigate();
-
   const handleStartQuiz = (quizId) => {
-    // Redirect to /test/:quizId route using react-router's navigate function
     navigate(`/test/${quizId}`);
   };
+  const [loading, setLoading] = useState(true);
+  const [quizAttempts, setQuizAttempts] = useState([]);
+
+  useEffect(() => {
+    const fetchQuizAttempts = async () => {
+      try {
+        const response = await axios.get(
+          `${backend}/api/quiz-attempts/${user.id}`
+        );
+        setQuizAttempts(response.data);
+        console.log(response.data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching quiz attempts:", error);
+        setLoading(false);
+      }
+    };
+
+    if (user) {
+      fetchQuizAttempts();
+    }
+  }, [user]);
 
   const quizzes = [
     {
@@ -60,32 +84,55 @@ const AttendQuiz = () => {
 
   return (
     <div className="w-[95%] h-[90%] m-5 self-start rounded-lg p-5">
-      {currentQuizzes.map((quiz, index) => (
-        <div
-          key={index}
-          className="mb-4 p-4 flex flex-col md:flex-row bg-white rounded-lg border-l-4 border-violet-500"
-        >
-          <div className="w-full md:w-[60%]">
-            <h1 className="text-2xl font-bold mb-2">{quiz.testName}</h1>
-            <div className="flex flex-col md:flex-row">
-              <p className="md:text-lg font-semibold mb-2 md:mb-0 ml-2">
-                Total Questions: {quiz.numberOfQuestions}
-              </p>
-              <p className="md:text-lg font-semibold ml-2">
-                Total Marks: {quiz.totalMarks}
-              </p>
+      {currentQuizzes.map((quiz, index) => {
+        const attempt = quizAttempts.find(
+          (attempt) =>
+            attempt.quiz_name === quiz.testName && attempt.already_attended
+        );
+
+        const isAttempted = attempt !== undefined;
+        const correctScore = isAttempted ? attempt.correctly_answered : 0;
+
+        return (
+          <div
+            key={index}
+            className={`mb-4 p-4 flex flex-col md:flex-row ${
+              isAttempted ? "bg-yellow-100" : "bg-white"
+            } rounded-lg`}
+          >
+            <div className="w-full md:w-[60%]">
+              <h1 className="text-2xl font-bold mb-2">
+                {quiz.testName}{" "}
+                <span className="font-thin text-sm">
+                  {isAttempted && `(prev. best: ${correctScore})`}
+                </span>
+              </h1>
+              <div className="flex flex-col md:flex-row">
+                <p className="md:text-lg font-semibold mb-2 md:mb-0 ml-2">
+                  <span className="font-thin"> Total Questions: </span>
+                  {quiz.numberOfQuestions}
+                </p>
+                <p className="md:text-lg font-semibold ml-2">
+                  <span className="font-thin"> Total Marks: </span>
+                  {quiz.totalMarks}
+                </p>
+              </div>
+            </div>
+            <div
+              className={`mt-2 md:mt-0 my-auto mx-auto md:ml-auto border hover:bg-yellow-400 hover:text-black ${
+                isAttempted ? "bg-yellow-500" : "bg-white"
+              } rounded-lg`}
+            >
+              <button
+                className="text-violet-500 p-2"
+                onClick={() => handleStartQuiz(indexOfFirstQuiz + index)}
+              >
+                Solve Challenge
+              </button>
             </div>
           </div>
-          <div className="mt-2 md:mt-0 my-auto mx-auto md:ml-auto border hover:bg-yellow-400 hover:text-black rounded-lg">
-            <button
-              className="text-violet-500 p-2"
-              onClick={() => handleStartQuiz(indexOfFirstQuiz + index)}
-            >
-              Solve Challenge
-            </button>
-          </div>
-        </div>
-      ))}
+        );
+      })}
 
       <div className="flex justify-between mt-4">
         {currentPage > 1 && (
