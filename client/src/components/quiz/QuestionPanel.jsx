@@ -1,10 +1,11 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   BsListCheck,
   BsArrowLeft,
   BsArrowRight,
   BsClock,
+  BsBookmark,
 } from "react-icons/bs"; // Importing icons
 import Questions from "./Questions";
 import axios from "axios";
@@ -27,16 +28,36 @@ const QuestionPanel = () => {
   const totalQuestions = quiz.questions.length;
   const [openModal, setOpenModal] = useState(false);
   const [openSubmitModal, setOpenSubmitModal] = useState(false);
-
   const [anchorEl, setAnchorEl] = useState(null); // State for dropdown menu anchor
   const [currentQuestion, setCurrentQuestion] = useState(0); // State for current question index
   const [answers, setAnswers] = useState(new Array(totalQuestions).fill("")); // State for storing answers
   const [answeredStatus, setAnsweredStatus] = useState(
     new Array(totalQuestions).fill(false)
   ); // State to track if question is answered
-
+  const [markedForReview, setMarkedForReview] = useState(
+    new Array(totalQuestions).fill(false)
+  ); // State to track questions marked for review
   const [startTime, setStartTime] = useState(new Date()); // State to store quiz start time
   const [elapsedTime, setElapsedTime] = useState(0); // State to store elapsed time in seconds
+
+  const dropdownRef = useRef(null); // Ref for dropdown menu
+
+  // Effect to listen for clicks outside the dropdown and close it
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setAnchorEl(null); // Close dropdown if clicked outside
+      }
+    };
+
+    // Add event listener when component mounts
+    document.addEventListener("mousedown", handleClickOutside);
+
+    // Cleanup event listener on component unmount
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   // Timer function to update elapsed time every second
   useEffect(() => {
@@ -153,6 +174,12 @@ const QuestionPanel = () => {
     }
   };
 
+  const toggleMarkedForReview = (index) => {
+    const newMarkedForReview = [...markedForReview];
+    newMarkedForReview[index] = !newMarkedForReview[index];
+    setMarkedForReview(newMarkedForReview);
+  };
+
   return (
     <div className="flex flex-col h-screen relative">
       <div className="h-[15%] md:h-[10%] m-4 rounded-xl bg-white flex items-center justify-between px-4 relative">
@@ -163,9 +190,17 @@ const QuestionPanel = () => {
         >
           <BsListCheck className="h-6 w-6" />
           {anchorEl && (
-            <div className="absolute bg-white mt-2 shadow-lg rounded-lg border border-gray-200">
+            <div
+              ref={dropdownRef}
+              className="absolute bg-white mt-2 shadow-lg rounded-lg border border-gray-200"
+            >
               {quiz.questions.map((question, index) => (
-                <div key={index} className="flex items-center p-2 md:w-[8rem]">
+                <div
+                  key={index}
+                  className={`flex items-center p-2 md:w-[14rem]  ${
+                    markedForReview[index] ? "bg-yellow-100" : ""
+                  }`}
+                >
                   <label
                     htmlFor={`question_${index}`}
                     className={`ml-1 cursor-pointer ${
@@ -181,6 +216,18 @@ const QuestionPanel = () => {
                     className="appearance-none w-4 h-4 m-3 p-3 rounded-full border ml-8 border-gray-300 checked:bg-green-500 checked:border-transparent focus:outline-none focus:ring-2 focus:ring-green-500"
                     readOnly
                   />
+                  <button
+                    className="ml-auto"
+                    onClick={() => toggleMarkedForReview(index)}
+                  >
+                    <BsBookmark
+                      className={`h-6 w-6 ${
+                        markedForReview[index]
+                          ? "text-yellow-600"
+                          : "text-gray-400"
+                      }`}
+                    />
+                  </button>
                 </div>
               ))}
             </div>
@@ -189,8 +236,6 @@ const QuestionPanel = () => {
 
         {/* Timer */}
         <div className="flex flex-grow items-center justify-center">
-          {" "}
-          {/* Added flex-grow to take remaining space */}
           <BsClock className="h-6 w-6 text-gray-600 mr-2" />
           <span className="text-gray-600">{formatTime(elapsedTime)}</span>
         </div>
@@ -198,16 +243,16 @@ const QuestionPanel = () => {
         {/* Previous Button */}
         {currentQuestion > 0 && (
           <button
-            className="text-gray-600 hover:text-gray-800 bg-blue-100 p-3 rounded-xl focus:outline-none"
+            className="text-gray-600 hover:text-gray-800 mr-4 bg-blue-100 p-3 rounded-xl focus:outline-none"
             onClick={handlePreviousQuestion}
           >
-            <BsArrowLeft className="h-5 w-5 ml-1" />
+            <BsArrowLeft className="h-5 w-5 " />
           </button>
         )}
 
         {/* End Test Button */}
         <button
-          className="ml-auto text-gray-600  bg-blue-100 p-2 rounded-xl hover:text-gray-800 focus:outline-none"
+          className="ml-auto text-gray-600  bg-blue-100 p-2 rounded-xl hover:text-gray-800 focus:outline-none relative"
           onClick={handleEndTest}
         >
           End Test
@@ -215,20 +260,35 @@ const QuestionPanel = () => {
       </div>
 
       {/* Body */}
-      <div className="flex-1 p-2 ">
+      <div className="flex-1 p-2">
         <div className="h-full flex items-center md:flex-row flex-col justify-center">
           {/* Questions Section */}
-          <div className="md:w-[50%] md:h-[95%] w-[80%] h-[30%] mb-2 rounded-xl bg-white p-10 ">
+          <div className="md:w-[50%] md:h-[95%] w-[80%] h-[30%] mb-2 rounded-xl bg-white p-10">
             <h2 className="text-lg font-bold">
               Question No: {currentQuestion + 1}
             </h2>
             <h2 className="text-lg font-semibold">
               {quiz.questions[currentQuestion].question}
             </h2>
+            {/* Mark for Review Button */}
+            <div className="flex items-center mt-4">
+              <button
+                className={`text-sm font-medium py-1 px-3 rounded-lg ${
+                  markedForReview[currentQuestion]
+                    ? "bg-yellow-200 text-yellow-600"
+                    : "bg-gray-200 text-gray-600"
+                } hover:bg-yellow-200 hover:text-yellow-600 focus:outline-none`}
+                onClick={() => toggleMarkedForReview(currentQuestion)}
+              >
+                {markedForReview[currentQuestion]
+                  ? "Marked for Review"
+                  : "Mark for Review"}
+              </button>
+            </div>
           </div>
 
           {/* Answer Section */}
-          <div className="md:w-[50%] md:ml-4 md:h-[95%] w-[80%] h-[60%] mb-2 rounded-xl bg-white p-10 ">
+          <div className="md:w-[50%] md:ml-4 md:h-[95%] w-[80%] h-[60%] mb-2 rounded-xl bg-white p-10">
             <ul className="md:mt-[1rem]">
               <h2 className="text-lg font-bold">Select the Correct answer</h2>
 
@@ -259,11 +319,11 @@ const QuestionPanel = () => {
         {/* Previous Button */}
         {currentQuestion > 0 && (
           <button
-            className="text-violet-600 border flex bg-blue-100 rounded-2xl m-1 hover:text-gray-800 focus:outline-none"
+            className="text-violet-600 border flex p-3 bg-blue-100 rounded-2xl m-1 hover:text-gray-800 focus:outline-none"
             onClick={handlePreviousQuestion}
           >
             <span>
-              <BsArrowLeft className="h-5 w-5 ml-1" />
+              <BsArrowLeft className="h-5 w-5 ml-1 " />
             </span>
           </button>
         )}
@@ -279,7 +339,7 @@ const QuestionPanel = () => {
         {/* Next Button */}
         {currentQuestion < totalQuestions - 1 && (
           <button
-            className="text-violet-600 border flex bg-blue-100 rounded-2xl m-1 hover:text-gray-800 focus:outline-none"
+            className="text-violet-600 border p-3 flex bg-blue-100 rounded-2xl m-1 hover:text-gray-800 focus:outline-none"
             onClick={handleNextQuestion}
           >
             <span>

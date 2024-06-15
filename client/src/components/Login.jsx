@@ -3,12 +3,14 @@ import axios from "axios";
 import { UserContext } from "../context/userContext";
 import { backend } from "../../constant";
 import { Link, Navigate } from "react-router-dom";
+import { BsEye, BsEyeSlash } from "react-icons/bs";
 
 function Login() {
   const { user, login } = useContext(UserContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -43,6 +45,11 @@ function Login() {
     return <Navigate to="/" />;
   }
 
+  // Function to toggle password visibility
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded shadow-md w-full max-w-sm">
@@ -61,17 +68,25 @@ function Login() {
               className="w-full px-3 py-2 border rounded text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-600"
             />
           </div>
-          <div className="mb-4">
+          <div className="mb-4 relative">
             <label className="block text-gray-700 text-sm font-bold mb-2">
               Password
             </label>
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
               className="w-full px-3 py-2 border rounded text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-600"
             />
+            {/* Toggle password visibility button */}
+            <button
+              type="button"
+              className="absolute right-3 top-3 text-gray-500"
+              onClick={togglePasswordVisibility}
+            >
+              {showPassword ? <BsEyeSlash /> : <BsEye />}
+            </button>
           </div>
           <div className="flex items-center justify-between">
             <button
@@ -82,7 +97,7 @@ function Login() {
             </button>
           </div>
           <Link to="/register" className="mt-6">
-            Dont have account?
+            Don't have an account?
           </Link>
         </form>
       </div>
