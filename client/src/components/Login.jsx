@@ -1,8 +1,8 @@
 import React, { useState, useContext } from "react";
 import axios from "axios";
-import { UserContext } from "../context/userContext"; // Adjust the import path as necessary
-import { backend } from "../../constant"; // Ensure this points to your backend URL
-import { Navigate } from "react-router-dom";
+import { UserContext } from "../context/userContext";
+import { backend } from "../../constant";
+import { Link, Navigate } from "react-router-dom";
 
 function Login() {
   const { user, login } = useContext(UserContext);
@@ -19,10 +19,8 @@ function Login() {
       });
       const token = response.data.token;
 
-      // Store the token in localStorage or any secure place
       localStorage.setItem("authToken", token);
 
-      // Fetch user info
       const userInfoResponse = await axios.get(
         `${backend}/api/users/userinfo`,
         {
@@ -31,7 +29,6 @@ function Login() {
       );
       const userData = userInfoResponse.data.user;
 
-      // Update context
       login(userData, token);
 
       console.log("Login successful:", userInfoResponse.data);
@@ -79,11 +76,14 @@ function Login() {
           <div className="flex items-center justify-between">
             <button
               type="submit"
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
+              className="bg-violet-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
             >
               Login
             </button>
           </div>
+          <Link to="/register" className="mt-6">
+            Dont have account?
+          </Link>
         </form>
       </div>
     </div>

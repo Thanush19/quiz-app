@@ -1,11 +1,12 @@
 import React, { useContext } from "react";
 import logo from "../../assets/logo.jpg";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { UserContext } from "../../context/userContext";
-import { BsX } from "react-icons/bs";
+import { BsX, BsPerson, BsList } from "react-icons/bs";
 
 const Sidebar = ({ isOpen, toggleSidebar }) => {
   const nav = useNavigate();
+  const location = useLocation();
   const { user } = useContext(UserContext);
 
   const goToProfile = () => {
@@ -22,6 +23,12 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
     }
   };
 
+  const getBorderStyle = (path) => {
+    return location.pathname === path
+      ? "border-l-4 border-violet-400"
+      : "border-transparent";
+  };
+
   return (
     <div
       className={`h-screen w-full md:w-[20%] bg-white rounded-r-xl ${
@@ -34,16 +41,29 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         </button>
       </div>
 
-      <div className="p-4">
+      <div className="p-4 flex flex-col items-center">
         <img
           src={logo}
           alt="Logo"
-          className="w-[50%] h-[50%] mx-auto rounded-t-xl"
+          className="w-[50%] h-[50%] md:w-full md:h-full mx-auto rounded-t-xl"
         />
-        <div className="flex-grow flex flex-col justify-center items-center mt-4">
-          <button onClick={goToProfile}>Profile</button>
-          <button onClick={goToTest} className="mt-2">
-            Test
+        <div className="flex-grow flex flex-col justify-center items-center mt-4 w-full">
+          <button
+            onClick={goToProfile}
+            className={`flex items-center p-2 w-full text-left ${getBorderStyle(
+              `/profile/${user?.id}`
+            )} hover:bg-gray-200`}
+          >
+            <BsPerson className="mr-2" size={20} /> Profile
+          </button>
+
+          <button
+            onClick={goToTest}
+            className={`flex items-center p-2 w-full mt-2 text-left ${getBorderStyle(
+              "/"
+            )} hover:bg-gray-200`}
+          >
+            <BsList className="mr-2" size={20} /> Test
           </button>
         </div>
       </div>

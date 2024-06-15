@@ -10,7 +10,7 @@ import Sidebar from "./common/Sidebar";
 ChartJS.register(ArcElement, Legend);
 
 const Profile = () => {
-  const { user } = useContext(UserContext);
+  const { user, logout } = useContext(UserContext);
   const [quizAttempts, setQuizAttempts] = useState([]);
   const [correctData, setCorrectData] = useState({});
   const [wrongData, setWrongData] = useState({});
@@ -111,9 +111,17 @@ const Profile = () => {
         <Sidebar />
 
         <div className="flex-grow">
-          <h1 className="text-center text-2xl text-violet-400 font-bold mb-4">
-            Profile Overview
-          </h1>
+          <div className="flex justify-between items-center">
+            <h1 className="text-center text-2xl text-violet-400 font-bold mb-4">
+              Profile Overview
+            </h1>
+            <button
+              onClick={logout}
+              className="text-white bg-red-500 hover:bg-red-700 px-4 py-2 rounded ml-4"
+            >
+              Logout
+            </button>
+          </div>
           {loading ? (
             <p>Loading quiz data...</p>
           ) : (

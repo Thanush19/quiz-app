@@ -28,21 +28,20 @@ const TestResult = () => {
       {
         label: "Questions",
         data: [wrongCount, totalQuestions - wrongCount],
-        backgroundColor: ["#FF0000", "#E0E7FF"], // red and blue-100
+        backgroundColor: ["#FF0000", "#E0E7FF"],
         hoverBackgroundColor: ["#FF0000", "#E0E7FF"],
         borderWidth: 1,
       },
     ],
   };
 
-  // Data for the second donut chart (Correct Answers and Total Questions)
   const secondChartData = {
     labels: ["Correct Answers", "Total Questions"],
     datasets: [
       {
         label: "Answers",
         data: [correctCount, totalQuestions - correctCount],
-        backgroundColor: ["#00FF00", "#E0E7FF"], // green and blue-100
+        backgroundColor: ["#00FF00", "#E0E7FF"],
         hoverBackgroundColor: ["#00FF00", "#E0E7FF"],
         borderWidth: 1,
       },

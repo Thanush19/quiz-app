@@ -15,7 +15,6 @@ function App() {
     <Routes>
       <Route path="/register" element={<Register />} />
       <Route path="/login" element={<Login />} />
-      {/* Protected routes */}
       <Route path="/" element={user ? <Home /> : <Navigate to="/login" />} />
       <Route
         path="/profile/:id"

@@ -1,10 +1,16 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { BsListCheck, BsArrowLeft, BsArrowRight } from "react-icons/bs"; // Importing icons
+import {
+  BsListCheck,
+  BsArrowLeft,
+  BsArrowRight,
+  BsClock,
+} from "react-icons/bs"; // Importing icons
 import Questions from "./Questions";
 import axios from "axios";
 import { backend } from "../../../constant";
 import { UserContext } from "../../context/userContext";
+import Modal from "./end test/Model";
 
 const QuestionPanel = () => {
   const navigate = useNavigate();
@@ -12,6 +18,7 @@ const QuestionPanel = () => {
   const { quizId } = useParams();
   const quiz = Questions[quizId];
   const totalQuestions = quiz.questions.length;
+  const [openModal, setOpenModal] = useState(false);
 
   const [anchorEl, setAnchorEl] = useState(null); // State for dropdown menu anchor
   const [currentQuestion, setCurrentQuestion] = useState(0); // State for current question index
@@ -21,6 +28,17 @@ const QuestionPanel = () => {
   ); // State to track if question is answered
 
   const [startTime, setStartTime] = useState(new Date()); // State to store quiz start time
+  const [elapsedTime, setElapsedTime] = useState(0); // State to store elapsed time in seconds
+
+  // Timer function to update elapsed time every second
+  useEffect(() => {
+    const timer = setInterval(() => {
+      const secondsElapsed = Math.floor((new Date() - startTime) / 1000);
+      setElapsedTime(secondsElapsed);
+    }, 1000);
+
+    return () => clearInterval(timer); // Cleanup on component unmount
+  }, [startTime]);
 
   const handleMenuClick = (event) => {
     setAnchorEl(anchorEl ? null : event.currentTarget); // Toggle dropdown menu
@@ -80,15 +98,14 @@ const QuestionPanel = () => {
       }
     });
 
-    // Calculate total time taken
     const endTime = new Date();
-    const totalTimeTaken = (endTime - startTime) / 1000; // in seconds
+    const totalTimeTaken = (endTime - startTime) / 1000;
 
     // Prepare quiz attempt data to be sent to backend
     const quizAttemptData = {
       quiz_name: quiz.testName,
-      user_id: user.id, // Replace with actual user ID (e.g., from authentication)
-      already_attended: true, // Example value, adjust as needed
+      user_id: user.id,
+      already_attended: true,
       correctly_answered: correctCount,
       wrong_answered: wrongCount,
       average_time_taken: totalTimeTaken / totalQuestions,
@@ -96,10 +113,8 @@ const QuestionPanel = () => {
     };
 
     try {
-      // POST request to save quiz attempt data to backend
       await axios.post(`${backend}/api/quiz-attempts`, quizAttemptData);
 
-      // Navigate to TestResult component with quiz results
       navigate(`/quiz/${quizId}/result`, {
         state: {
           totalQuestions,
@@ -122,7 +137,7 @@ const QuestionPanel = () => {
 
   return (
     <div className="flex flex-col h-screen relative">
-      <div className="h-[15%] m-4 rounded-xl bg-white flex items-center justify-between px-4 relative">
+      <div className="h-[15%] md:h-[10%] m-4 rounded-xl bg-white flex items-center justify-between px-4 relative">
         {/* Menu Icon */}
         <button
           className="text-gray- bg-blue-100 p-3 m-3 rounded-lg mr-3 hover:text-gray-800 focus:outline-none relative"
@@ -153,6 +168,14 @@ const QuestionPanel = () => {
             </div>
           )}
         </button>
+
+        {/* Timer */}
+        <div className="flex flex-grow items-center justify-center">
+          {" "}
+          {/* Added flex-grow to take remaining space */}
+          <BsClock className="h-6 w-6 text-gray-600 mr-2" />
+          <span className="text-gray-600">{formatTime(elapsedTime)}</span>
+        </div>
 
         {/* Previous Button */}
         {currentQuestion > 0 && (
@@ -187,7 +210,7 @@ const QuestionPanel = () => {
           </div>
 
           {/* Answer Section */}
-          <div className="md:w-[50%] md:h-[95%] w-[80%] h-[60%] mb-2 rounded-xl bg-white p-10 ">
+          <div className="md:w-[50%] md:ml-4 md:h-[95%] w-[80%] h-[60%] mb-2 rounded-xl bg-white p-10 ">
             <ul className="md:mt-[1rem]">
               <h2 className="text-lg font-bold">Select the Correct answer</h2>
 
@@ -214,7 +237,7 @@ const QuestionPanel = () => {
       </div>
 
       {/* Footer */}
-      <div className="h-[15%] m-4  rounded-xl bg-white flex items-center justify-between px-4 relative">
+      <div className="h-[15%] md:h-[10%]  m-4  rounded-xl bg-white flex items-center justify-between px-4 relative">
         {/* Previous Button */}
         {currentQuestion > 0 && (
           <button
@@ -227,8 +250,9 @@ const QuestionPanel = () => {
           </button>
         )}
 
+        {/* Submit Button */}
         <button
-          className="text-gray- bg-blue-100 p-3 m-3 rounded-lg mr-3 hover:text-gray-800 focus:outline-none relative"
+          className="text-gray- bg-blue-100 p-3 md :rounded-lg mr-3 hover:text-gray-800 focus:outline-none relative"
           onClick={handleSubmitQuiz}
         >
           Save & Submit
@@ -251,3 +275,13 @@ const QuestionPanel = () => {
 };
 
 export default QuestionPanel;
+
+function formatTime(seconds) {
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const remainingSeconds = seconds % 60;
+
+  return `${hours.toString().padStart(2, "0")}:${minutes
+    .toString()
+    .padStart(2, "0")}:${remainingSeconds.toString().padStart(2, "0")}`;
+}

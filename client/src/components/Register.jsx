@@ -3,10 +3,12 @@ import axios from "axios";
 import { backend } from "../../constant";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-import { useNavigate } from "react-router-dom"; // Import useNavigate hook
+import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify"; // Import toast components
+import "react-toastify/dist/ReactToastify.css"; // Import toast styles
 
 function Register() {
-  const navigate = useNavigate(); // Initialize useNavigate hook
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     username: "",
@@ -15,6 +17,7 @@ function Register() {
     password: "",
   });
   const [showPassword, setShowPassword] = useState(false);
+  const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -22,14 +25,56 @@ function Register() {
       ...prevData,
       [name]: value,
     }));
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: "",
+    }));
   };
 
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
 
+  const validateForm = () => {
+    const errors = {};
+
+    if (!formData.username.trim()) {
+      errors.username = "Username is required";
+    }
+
+    if (!formData.email.trim()) {
+      errors.email = "Email is required";
+    } else if (
+      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(formData.email)
+    ) {
+      errors.email = "Invalid email address";
+    }
+
+    if (!formData.phoneNumber.trim()) {
+      errors.phoneNumber = "Phone number is required";
+    } else if (!/^\d{10}$/i.test(formData.phoneNumber)) {
+      errors.phoneNumber = "Invalid phone number";
+    }
+
+    if (!formData.password.trim()) {
+      errors.password = "Password is required";
+    } else if (formData.password.length < 6) {
+      errors.password = "Password must be at least 6 characters long";
+    }
+
+    return errors;
+  };
+
   const handleRegister = async (e) => {
     e.preventDefault();
+
+    const validationErrors = validateForm();
+
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
     try {
       const { firstName, lastName, phoneNumber, ...rest } = formData;
       const payload = {
@@ -43,14 +88,14 @@ function Register() {
         payload
       );
       console.log("Register successful:", response.data);
-      // Handle successful registration here (e.g., redirect to login, show success message)
-      navigate("/login"); // Navigate to login page after successful registration
+      toast.success("Registration successful!"); // Success toast notification
+      navigate("/login");
     } catch (error) {
       console.error(
         "Error registering:",
         error.response?.data || error.message
       );
-      // Handle registration error here (e.g., show error message)
+      toast.error("Registration failed. Please try again."); // Error toast notification
     }
   };
 
@@ -68,8 +113,13 @@ function Register() {
               name="username"
               value={formData.username}
               onChange={handleChange}
-              className="w-full px-3 py-2 border rounded text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-600"
+              className={`w-full px-3 py-2 border rounded text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-600 ${
+                errors.username ? "border-red-500" : ""
+              }`}
             />
+            {errors.username && (
+              <p className="text-red-500 text-sm mt-1">{errors.username}</p>
+            )}
           </div>
 
           <div className="mb-4">
@@ -81,9 +131,15 @@ function Register() {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className="w-full px-3 py-2 border rounded text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-600"
+              className={`w-full px-3 py-2 border rounded text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-600 ${
+                errors.email ? "border-red-500" : ""
+              }`}
             />
+            {errors.email && (
+              <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+            )}
           </div>
+
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2">
               Phone Number
@@ -93,9 +149,15 @@ function Register() {
               name="phoneNumber"
               value={formData.phoneNumber}
               onChange={handleChange}
-              className="w-full px-3 py-2 border rounded text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-600"
+              className={`w-full px-3 py-2 border rounded text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-600 ${
+                errors.phoneNumber ? "border-red-500" : ""
+              }`}
             />
+            {errors.phoneNumber && (
+              <p className="text-red-500 text-sm mt-1">{errors.phoneNumber}</p>
+            )}
           </div>
+
           <div className="mb-4 relative">
             <label className="block text-gray-700 text-sm font-bold mb-2">
               Password
@@ -105,24 +167,29 @@ function Register() {
               name="password"
               value={formData.password}
               onChange={handleChange}
-              className="w-full px-3 py-2 border rounded text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-600"
+              className={`w-full px-3 py-2 border rounded text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-600 ${
+                errors.password ? "border-red-500" : ""
+              }`}
             />
             <FontAwesomeIcon
               icon={showPassword ? faEyeSlash : faEye}
               onClick={toggleShowPassword}
               className="absolute right-3 top-9 cursor-pointer text-gray-700"
             />
+            {errors.password && (
+              <p className="text-red-500 text-sm mt-1">{errors.password}</p>
+            )}
           </div>
 
           <div className="flex items-center justify-between mb-4">
             <button
               type="submit"
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
+              className="bg-violet-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
             >
               Register
             </button>
             <span
-              onClick={() => navigate("/login")} // Navigate to login page on click
+              onClick={() => navigate("/login")}
               className="text-sm text-blue-500 cursor-pointer hover:underline"
             >
               Already have an account? Login
@@ -130,6 +197,8 @@ function Register() {
           </div>
         </form>
       </div>
+      <ToastContainer position="top-center" autoClose={3000} />{" "}
+      {/* Toast container */}
     </div>
   );
 }
