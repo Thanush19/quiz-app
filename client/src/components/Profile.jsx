@@ -3,6 +3,7 @@ import axios from "axios";
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Legend, Tooltip } from "chart.js";
 import { UserContext } from "../context/userContext";
+
 import { backend } from "../../constant";
 import {
   LineChart,
@@ -15,6 +16,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import Sidebar from "./common/Sidebar";
+import { useNavigate } from "react-router-dom";
 
 ChartJS.register(ArcElement, Legend, Tooltip);
 
@@ -103,6 +105,10 @@ const Profile = () => {
       setAverageTimeData(averageTimeChartData);
     }
   }, [quizAttempts]);
+  const nav = useNavigate();
+  const goBack = () => {
+    nav("/");
+  };
 
   return (
     <>
@@ -111,6 +117,13 @@ const Profile = () => {
 
         <div className="flex-grow">
           <div className="flex justify-between items-center">
+            <button
+              onClick={goBack}
+              className="text-white bg-violet-400 md:mr-10 hover:bg-violet-700 px-4 py-2 rounded ml-4"
+            >
+              Go back
+            </button>
+
             <h1 className="text-center text-2xl mx-auto mt-20 text-violet-400 font-bold mb-4">
               Profile Overview
             </h1>
