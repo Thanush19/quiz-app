@@ -185,19 +185,19 @@ const QuestionPanel = () => {
       <div className="h-[15%] md:h-[10%] m-4 rounded-xl bg-white flex items-center justify-between px-4 relative">
         {/* Menu Icon */}
         <button
-          className="text-gray- bg-blue-100 p-3 m-3 rounded-lg mr-3 hover:text-gray-800 focus:outline-none relative"
+          className="text-gray- bg-blue-100 md:p-3 p-1.5 m-3 rounded-lg mr-3 hover:text-gray-800 focus:outline-none relative"
           onClick={handleMenuClick}
         >
           <BsListCheck className="h-6 w-6" />
           {anchorEl && (
             <div
               ref={dropdownRef}
-              className="absolute bg-white mt-2 shadow-lg rounded-lg border border-gray-200"
+              className="absolute bg-white mt-2 shadow-lg rounded-lg border border-gray-200 sm:max-h-[20rem] md:max-h-[37rem] overflow-y-auto"
             >
               {quiz.questions.map((question, index) => (
                 <div
                   key={index}
-                  className={`flex items-center p-2 md:w-[10rem]  ${
+                  className={`flex items-center p-2 md:w-[10rem] ${
                     markedForReview[index] ? "bg-yellow-100" : ""
                   }`}
                 >
@@ -235,15 +235,17 @@ const QuestionPanel = () => {
         </button>
 
         {/* Timer */}
-        <div className="flex flex-grow items-center justify-center">
-          <BsClock className="h-6 w-6 text-gray-600 mr-2" />
-          <span className="text-gray-600">{formatTime(elapsedTime)}</span>
+        <div className="flex md:flex-grow sm:w-[2rem]  items-center justify-center">
+          <BsClock className="md:h-6 md:w-6 text-gray-600 mr-2" />
+          <span className="text-gray-600 sm:mr-5">
+            {formatTime(elapsedTime)}
+          </span>
         </div>
 
         {/* Previous Button */}
         {currentQuestion > 0 && (
           <button
-            className="text-gray-600 hover:text-gray-800 mr-4 bg-blue-100 p-3 rounded-xl focus:outline-none"
+            className="text-gray-600 hover:text-gray-800 md:mr-4  bg-blue-100 md:p-3 p-1.5 ml-2 rounded-xl focus:outline-none"
             onClick={handlePreviousQuestion}
           >
             <BsArrowLeft className="h-5 w-5 " />
@@ -252,7 +254,7 @@ const QuestionPanel = () => {
 
         {/* End Test Button */}
         <button
-          className="ml-auto text-gray-600  bg-blue-100 p-2 rounded-xl hover:text-gray-800 focus:outline-none relative"
+          className="ml-auto text-gray-600  bg-blue-100 md:p-2 p-1 rounded-xl hover:text-gray-800 focus:outline-none relative"
           onClick={handleEndTest}
         >
           End Test
@@ -263,7 +265,7 @@ const QuestionPanel = () => {
       <div className="flex-1 p-2">
         <div className="h-full flex items-center md:flex-row flex-col justify-center">
           {/* Questions Section */}
-          <div className="md:w-[50%] md:h-[95%] w-[80%] h-[30%] mb-2 rounded-xl bg-white p-10">
+          <div className="md:w-[50%] md:h-[95%] w-[80%] h-[30%] mb-2 rounded-xl bg-white p-10 overflow-y-auto">
             <h2 className="text-lg font-bold">
               Question No: {currentQuestion + 1}
             </h2>
@@ -288,7 +290,7 @@ const QuestionPanel = () => {
           </div>
 
           {/* Answer Section */}
-          <div className="md:w-[50%] md:ml-4 md:h-[95%] w-[80%] h-[60%] mb-2 rounded-xl bg-white p-10">
+          <div className="md:w-[50%] overflow-y-auto md:ml-4 md:h-[95%] w-[80%] h-[60%] mb-2 rounded-xl bg-white p-10">
             <ul className="md:mt-[1rem]">
               <h2 className="text-lg font-bold">Select the Correct answer</h2>
 
@@ -330,7 +332,7 @@ const QuestionPanel = () => {
 
         {/* Submit Button */}
         <button
-          className="text-gray- bg-blue-100 p-3 md:rounded-lg mr-3 hover:text-gray-800 focus:outline-none relative"
+          className="text-gray- bg-blue-100 p-2 rounded-lg md:p-3 md:rounded-lg mr-3 hover:text-gray-800 focus:outline-none relative"
           onClick={handleSubmitQuiz}
         >
           Save & Submit
