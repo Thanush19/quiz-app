@@ -74,11 +74,7 @@ const Profile = () => {
       ).toFixed(2);
 
       setChartData({
-        labels: [
-          "Correct Percentage",
-          "Wrong Percentage",
-          "Remaining Percentage",
-        ],
+        labels: ["Correct %", "Wrong %", "questions attempted %"],
         datasets: [
           {
             label: "Quiz Data",
