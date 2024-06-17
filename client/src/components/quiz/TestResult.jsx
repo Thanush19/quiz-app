@@ -77,7 +77,7 @@ const TestResult = () => {
   return (
     <>
       <div className="h-screen flex flex-col items-center justify-center">
-        <div className="bg-white h-[8%]  w-[90%] mb-10 rounded-lg"></div>
+        <div className="bg-white h-[8%]  w-[90%] mt-6 mb-10 rounded-lg"></div>
 
         {/* <h1 className="text-3xl font-bold mb-4">Quiz Results: {testName}</h1> */}
         <h1 className="text-3xl font-bold mb-4 text-green-600">
