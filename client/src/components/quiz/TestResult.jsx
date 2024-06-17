@@ -90,8 +90,17 @@ const TestResult = () => {
               <Doughnut data={firstChartData} options={options} />
             </div>
             <div className="text-center mt-4">
-              <p>Wrongly Answered: {wrongCount}</p>
-              <p>Total Questions: {totalQuestions}</p>
+              <div className="flex flex-row justify-center items-center">
+                <div className="bg-red-600 w-3 h-3"></div>
+                <p>Wrongly Answered: {wrongCount}</p>
+              </div>
+              <hr className="w-full my-4 border-t-2 border-gray-400" />
+
+              <div className="flex flex-row justify-center items-center">
+                <div className="bg-gray-400 w-3 h-3"></div>
+
+                <p>Total Questions: {totalQuestions}</p>
+              </div>
             </div>
           </div>
           <div className="w-full rounded-xl md:w-1/3 h-full bg-white mt-5 p-4">
@@ -100,8 +109,17 @@ const TestResult = () => {
               <Doughnut data={secondChartData} options={options} />
             </div>
             <div className="text-center mt-4">
-              <p>Correctly Answered: {correctCount}</p>
-              <p>Total Questions: {totalQuestions}</p>
+              <div className="flex flex-row justify-center items-center">
+                <div className="bg-green-400 w-3 h-3"></div>
+                <p>Correctly Answered: {correctCount}</p>
+              </div>
+              <hr className="w-full my-4 border-t-2 border-gray-400" />
+
+              <div className="flex flex-row justify-center items-center">
+                <div className="bg-gray-400 w-3 h-3"></div>
+
+                <p>Total Questions: {totalQuestions}</p>
+              </div>
             </div>
           </div>
         </div>
