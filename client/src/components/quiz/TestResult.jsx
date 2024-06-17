@@ -77,7 +77,7 @@ const TestResult = () => {
   return (
     <>
       <div className="h-screen flex flex-col items-center justify-center">
-        <div className="bg-white h-[8%]  w-[90%] mt-6 mb-10 rounded-lg"></div>
+        <div className="bg-white h-[8%]  w-[90%] mt-3 mb-2 rounded-lg"></div>
 
         {/* <h1 className="text-3xl font-bold mb-4">Quiz Results: {testName}</h1> */}
         <h1 className="text-3xl font-bold mb-4 text-green-600">
@@ -106,10 +106,13 @@ const TestResult = () => {
           </div>
         </div>
 
-        <h2 className="mt-10 text-2xl font-bold">
+        {/* <h2 className="mt-10 text-2xl font-bold">
           Time Taken for Each Question:
-        </h2>
-        <p>Average Time Per Question: {averageTimePerQuestion} seconds</p>
+        </h2> */}
+        <p className="mt-7 font-semibold  ">
+          Average Time Per Question:
+          <span className="font-bold"> {averageTimePerQuestion} seconds</span>
+        </p>
 
         <button
           className="mt-8 bg-violet-500 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded"
@@ -117,7 +120,7 @@ const TestResult = () => {
         >
           Back to Home
         </button>
-        <div className="bg-white h-[8%] mt-10 w-[90%] mb-10 rounded-lg"></div>
+        <div className="bg-white h-[8%] mt-10 w-[90%] mb-6 rounded-lg"></div>
       </div>
     </>
   );
