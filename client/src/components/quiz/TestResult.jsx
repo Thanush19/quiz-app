@@ -75,43 +75,51 @@ const TestResult = () => {
   };
 
   return (
-    <div className="h-screen flex flex-col items-center justify-center">
-      <h1 className="text-3xl font-bold mb-4">Quiz Results: {testName}</h1>
-      <div className="flex flex-col w-[50%] md:flex-row justify-around mt-10">
-        <div className="md:w-1/3 h-full bg-white p-4 mt-5">
-          <h2 className="text-xl font-bold mb-4">Questions Overview</h2>
-          <div className="">
-            <Doughnut data={firstChartData} options={options} />
+    <>
+      <div className="h-screen flex flex-col items-center justify-center">
+        <div className="bg-white h-[8%]  w-[90%] mb-10 rounded-lg"></div>
+
+        {/* <h1 className="text-3xl font-bold mb-4">Quiz Results: {testName}</h1> */}
+        <h1 className="text-3xl font-bold mb-4 text-green-600">
+          Thank you for taking the test
+        </h1>
+        <div className="flex flex-col w-[50%]  md:flex-row justify-around mt-10">
+          <div className="md:w-1/3 h-full rounded-xl bg-white p-4 mt-5">
+            <h2 className="text-xl font-bold mb-4">Questions Overview</h2>
+            <div className="">
+              <Doughnut data={firstChartData} options={options} />
+            </div>
+            <div className="text-center mt-4">
+              <p>Wrongly Answered: {wrongCount}</p>
+              <p>Total Questions: {totalQuestions}</p>
+            </div>
           </div>
-          <div className="text-center mt-4">
-            <p>Wrongly Answered: {wrongCount}</p>
-            <p>Total Questions: {totalQuestions}</p>
+          <div className="w-full rounded-xl md:w-1/3 h-full bg-white mt-5 p-4">
+            <h2 className="text-xl font-bold mb-4">Answers Overview</h2>
+            <div className="">
+              <Doughnut data={secondChartData} options={options} />
+            </div>
+            <div className="text-center mt-4">
+              <p>Correctly Answered: {correctCount}</p>
+              <p>Total Questions: {totalQuestions}</p>
+            </div>
           </div>
         </div>
-        <div className="w-full md:w-1/3 h-full bg-white mt-5 p-4">
-          <h2 className="text-xl font-bold mb-4">Answers Overview</h2>
-          <div className="">
-            <Doughnut data={secondChartData} options={options} />
-          </div>
-          <div className="text-center mt-4">
-            <p>Correctly Answered: {correctCount}</p>
-            <p>Total Questions: {totalQuestions}</p>
-          </div>
-        </div>
+
+        <h2 className="mt-10 text-2xl font-bold">
+          Time Taken for Each Question:
+        </h2>
+        <p>Average Time Per Question: {averageTimePerQuestion} seconds</p>
+
+        <button
+          className="mt-8 bg-violet-500 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded"
+          onClick={handleBackToHome}
+        >
+          Back to Home
+        </button>
+        <div className="bg-white h-[8%] mt-10 w-[90%] mb-10 rounded-lg"></div>
       </div>
-
-      <h2 className="mt-10 text-2xl font-bold">
-        Time Taken for Each Question:
-      </h2>
-      <p>Average Time Per Question: {averageTimePerQuestion} seconds</p>
-
-      <button
-        className="mt-8 bg-violet-500 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded"
-        onClick={handleBackToHome}
-      >
-        Back to Home
-      </button>
-    </div>
+    </>
   );
 };
 
