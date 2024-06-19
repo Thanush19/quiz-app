@@ -51,7 +51,7 @@ const Sidebar1 = () => {
       )}
 
       <div
-        className={`fixed top-0 left-0 h-screen bg-white transform ${
+        className={`fixed top-0 left-0 h-screen rounded-3xl bg-white transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         } transition-transform duration-300 ease-in-out md:relative md:translate-x-0 md:w-[15rem] w-[40%] z-20`}
       >
@@ -64,8 +64,10 @@ const Sidebar1 = () => {
         </div>
         <div>
           <div
-            className={`flex items-center ${
-              location.pathname === "/" ? "border-l-4 border-violet-600" : ""
+            className={`flex items-center h-[2rem] ${
+              location.pathname === "/"
+                ? "border-l-4 border-violet-600 bg-gray-100 "
+                : ""
             }`}
           >
             <div className="flex justify-center items-center ml-[2rem]">
@@ -76,8 +78,8 @@ const Sidebar1 = () => {
             </div>
           </div>
           <div
-            className={`flex items-center ${
-              isProfilePath ? "border-l-4 border-violet-600" : ""
+            className={`flex items-center mt-4 h-[2rem] ${
+              isProfilePath ? "border-l-4 border-violet-600 bg-gray-100 " : ""
             }`}
           >
             <div className="flex justify-center items-center ml-[2rem]">

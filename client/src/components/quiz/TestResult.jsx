@@ -76,7 +76,7 @@ const TestResult = () => {
 
   return (
     <>
-      <div className="h-screen flex flex-col items-center justify-center">
+      <div className="h-screen flex flex-col items-center justify-center font-inter ">
         <div className="bg-white h-[8%]  w-[90%] mt-3 mb-2 rounded-lg"></div>
 
         {/* <h1 className="text-3xl font-bold mb-4">Quiz Results: {testName}</h1> */}
@@ -94,13 +94,13 @@ const TestResult = () => {
             </div>
             <div className="text-center mt-4">
               <div className="flex flex-row justify-center items-center">
-                <div className="bg-red-600 w-3 h-3"></div>
+                <div className="bg-red-600 w-3 h-3 mr-2"></div>
                 <p>Wrongly Answered: {wrongCount}</p>
               </div>
               <hr className="w-full my-4 border-t-2 border-gray-400" />
 
               <div className="flex flex-row justify-center items-center">
-                <div className="bg-gray-400 w-3 h-3"></div>
+                <div className="bg-gray-400 w-3 h-3 mr-2"></div>
 
                 <p>Total Questions: {totalQuestions}</p>
               </div>
@@ -113,13 +113,13 @@ const TestResult = () => {
             </div>
             <div className="text-center mt-4">
               <div className="flex flex-row justify-center items-center">
-                <div className="bg-green-400 w-3 h-3"></div>
+                <div className="bg-green-400 w-3 mr-2 h-3"></div>
                 <p>Correctly Answered: {correctCount}</p>
               </div>
               <hr className="w-full my-4 border-t-2 border-gray-400" />
 
               <div className="flex flex-row justify-center items-center">
-                <div className="bg-gray-400 w-3 h-3"></div>
+                <div className="bg-gray-400 w-3 mr-2 h-3"></div>
 
                 <p>Total Questions: {totalQuestions}</p>
               </div>
