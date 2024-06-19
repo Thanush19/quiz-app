@@ -3,5 +3,5 @@
 @tailwind utilities;
 /* index.css */
 body {
-  @apply bg-blue-100; /* Apply Tailwind CSS class */
+  @apply bg-gray-100; /* Apply Tailwind CSS class */
 }

@@ -2,8 +2,8 @@ import React from "react";
 
 const Topbar = () => {
   return (
-    <div className="bg-white w-[95%] h-[3rem] rounded-lg self-start m-5 flex justify-center items-center">
-      <h1 className="text-center">Quizzes for You!</h1>
+    <div className="bg-white w-[95%] h-[3rem]  rounded-lg self-start m-5 flex items-center">
+      <h1 className="ml-5 text-md">Quizzes for You!</h1>
     </div>
   );
 };

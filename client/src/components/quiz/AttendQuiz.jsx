@@ -97,34 +97,37 @@ const AttendQuiz = () => {
           <div
             key={index}
             className={`mb-4 p-4 flex flex-col md:flex-row ${
-              isAttempted ? "bg-yellow-100" : "bg-white"
+              isAttempted ? "bg-orange-100" : "bg-white"
             } rounded-lg`}
           >
             <div className="w-full md:w-[60%]">
-              <h1 className="text-2xl font-bold mb-2">
+              <h1 className="text-xl font-bold mb-2">
                 {quiz.testName}{" "}
                 <span className="font-thin text-sm">
                   {isAttempted && `(prev. best: ${correctScore})`}
                 </span>
               </h1>
               <div className="flex flex-col md:flex-row">
-                <p className="md:text-lg font-semibold mb-2 md:mb-0 ml-2">
+                <p className="md:text-md  mb-2 md:mb-0 ml-2">
                   <span className="font-thin"> Total Questions: </span>
-                  {quiz.numberOfQuestions}
+
+                  <span className="font-semibold">
+                    {quiz.numberOfQuestions}
+                  </span>
                 </p>
-                <p className="md:text-lg font-semibold ml-2">
+                <p className="md:text-md  ml-2">
                   <span className="font-thin"> Total Marks: </span>
-                  {quiz.totalMarks}
+                  <span className="font-semibold">{quiz.totalMarks}</span>
                 </p>
               </div>
             </div>
             <div
-              className={`mt-2 md:mt-0 my-auto mx-auto md:ml-auto border hover:bg-yellow-400 hover:text-black ${
-                isAttempted ? "bg-yellow-500" : "bg-white"
+              className={`mt-2 md:mt-0 my-auto mx-auto md:ml-auto border hover:bg-yellow-300 hover:text-black ${
+                isAttempted ? "bg-yellow-400" : "bg-white"
               } rounded-lg`}
             >
               <button
-                className="text-violet-500 p-2"
+                className="text-gray-500 p-2 font-semibold "
                 onClick={() => handleStartQuiz(indexOfFirstQuiz + index)}
               >
                 Solve Challenge
