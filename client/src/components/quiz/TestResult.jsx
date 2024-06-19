@@ -83,9 +83,12 @@ const TestResult = () => {
         <h1 className="text-3xl font-bold mb-4 text-green-600">
           Thank you for taking the test
         </h1>
+        <h1 className="text-3xl font-bold mb-4 md:mt-[1rem] text-green-600">
+          Your Report{" "}
+        </h1>
         <div className="flex flex-col w-[50%]  md:flex-row justify-around mt-10">
           <div className="md:w-1/3 h-full rounded-xl bg-white p-4 mt-5">
-            <h2 className="text-xl font-bold mb-4">Questions Overview</h2>
+            <h2 className="text-xl font-bold mb-4">Questions Attended</h2>
             <div className="">
               <Doughnut data={firstChartData} options={options} />
             </div>
@@ -104,7 +107,7 @@ const TestResult = () => {
             </div>
           </div>
           <div className="w-full rounded-xl md:w-1/3 h-full bg-white mt-5 p-4">
-            <h2 className="text-xl font-bold mb-4">Answers Overview</h2>
+            <h2 className="text-xl font-bold mb-4">Correct Answers</h2>
             <div className="">
               <Doughnut data={secondChartData} options={options} />
             </div>
