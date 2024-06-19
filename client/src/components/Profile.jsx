@@ -17,6 +17,7 @@ import {
 } from "recharts";
 import Sidebar from "./common/Sidebar";
 import { useNavigate } from "react-router-dom";
+import Sidebar1 from "./common/Sidebar1";
 
 ChartJS.register(ArcElement, Legend, Tooltip);
 
@@ -113,9 +114,10 @@ const Profile = () => {
   return (
     <>
       <div className="flex">
-        <Sidebar />
+        {/* <Sidebar /> */}
+        <Sidebar1 />
 
-        <div className="flex-grow">
+        <div className="flex-grow md:w-[60%] ">
           <div className="flex justify-between items-center">
             <button
               onClick={goBack}
