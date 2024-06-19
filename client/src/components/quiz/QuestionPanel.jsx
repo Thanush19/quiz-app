@@ -334,7 +334,9 @@ const QuestionPanel = () => {
 
         {/* Submit Button */}
         <button
-          className="text-gray- bg-blue-100 p-2 rounded-lg md:p-3 md:rounded-lg mr-3 hover:text-gray-800 focus:outline-none relative"
+          className={`text-gray- bg-blue-100 p-2 rounded-lg md:p-3 md:rounded-lg mr-3 hover:text-gray-800 focus:outline-none ${
+            currentQuestion === 0 ? "opacity-50 cursor-not-allowed" : ""
+          }`}
           onClick={handleSubmitQuiz}
         >
           Save & Submit
