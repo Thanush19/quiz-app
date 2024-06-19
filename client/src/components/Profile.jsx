@@ -3,7 +3,7 @@ import axios from "axios";
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Legend, Tooltip } from "chart.js";
 import { UserContext } from "../context/userContext";
-
+import { BsArrowLeft } from "react-icons/bs";
 import { backend } from "../../constant";
 import {
   LineChart,
@@ -121,9 +121,9 @@ const Profile = () => {
           <div className="flex justify-between items-center">
             <button
               onClick={goBack}
-              className="text-white bg-violet-400 md:mr-10 hover:bg-violet-700 px-4 py-2 rounded ml-4"
+              className="text-white bg-violet-400 md:mr-10 hover:bg-violet-700 md:p-4 p-2 rounded ml-4"
             >
-              Go back
+              <BsArrowLeft className="h-5 w-5 " />
             </button>
 
             <h1 className="text-center text-2xl mx-auto mt-20 text-violet-400 font-bold mb-4">
@@ -131,7 +131,7 @@ const Profile = () => {
             </h1>
             <button
               onClick={logout}
-              className="text-white bg-red-500 md:mr-10 hover:bg-red-700 px-4 py-2 rounded ml-4"
+              className="text-white bg-red-500 md:mr-10 hover:bg-red-700 md:p-4 p-1 md:text-xl text-md rounded ml-4"
             >
               Logout
             </button>
