@@ -181,7 +181,7 @@ const QuestionPanel = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen relative">
+    <div className="flex flex-col h-screen relative font-inter ">
       <div className="h-[15%] md:h-[10%] m-4 rounded-xl bg-white flex items-center justify-between px-4 relative">
         {/* Menu Icon */}
         <button
@@ -266,12 +266,8 @@ const QuestionPanel = () => {
         <div className="h-full flex items-center md:flex-row flex-col justify-center">
           {/* Questions Section */}
           <div className="md:w-[50%] md:h-[95%] w-[80%] h-[30%] mb-2 rounded-xl bg-white p-10 overflow-y-auto">
-            <h2 className="text-lg font-bold">
-              Question No: {currentQuestion + 1}
-            </h2>
-            <h2 className="text-lg font-semibold">
-              {quiz.questions[currentQuestion].question}
-            </h2>
+            <h2 className="mb-10">Question No: {currentQuestion + 1}</h2>
+            <h2 className="">{quiz.questions[currentQuestion].question}</h2>
             {/* Mark for Review Button */}
             <div className="flex items-center mt-4">
               <button
@@ -292,7 +288,7 @@ const QuestionPanel = () => {
           {/* Answer Section */}
           <div className="md:w-[50%] overflow-y-auto md:ml-4 md:h-[95%] w-[80%] h-[60%] mb-2 rounded-xl bg-white p-10">
             <ul className="md:mt-[1rem]">
-              <h2 className="text-lg font-bold">Select the Correct answer</h2>
+              <h2 className="text-lg ">Select the Correct answer</h2>
 
               {quiz.questions[currentQuestion].options.map((option, oIndex) => (
                 <li
@@ -305,6 +301,12 @@ const QuestionPanel = () => {
                       name={`question_${currentQuestion}`}
                       value={option}
                       checked={answers[currentQuestion] === option}
+                      style={{
+                        color:
+                          answers[currentQuestion] === option
+                            ? "black"
+                            : "initial",
+                      }}
                       onChange={handleOptionChange}
                     />
                     <span className="ml-2">{option}</span>

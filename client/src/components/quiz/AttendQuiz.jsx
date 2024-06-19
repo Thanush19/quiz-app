@@ -149,7 +149,7 @@ const AttendQuiz = () => {
         {currentPage < totalPages && (
           <button
             onClick={handleNext}
-            className="px-4 bg-purple-500 hover:bg-violet-500 hover:text-white py-2 border rounded"
+            className="px-4 bg-violet-700 hover:bg-violet-500 text-white hover:text-white py-2 border rounded"
           >
             Next
           </button>

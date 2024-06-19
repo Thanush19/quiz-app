@@ -70,7 +70,9 @@ const Sidebar1 = () => {
           >
             <div className="flex justify-center items-center ml-[2rem]">
               <BsList />
-              <button onClick={goToTest}>Test</button>
+              <button onClick={goToTest} className="ml-4">
+                Test
+              </button>
             </div>
           </div>
           <div
@@ -80,7 +82,9 @@ const Sidebar1 = () => {
           >
             <div className="flex justify-center items-center ml-[2rem]">
               <BsPerson />
-              <button onClick={goToProfile}>Profile</button>
+              <button className="ml-4" onClick={goToProfile}>
+                Profile
+              </button>
             </div>
           </div>
         </div>
