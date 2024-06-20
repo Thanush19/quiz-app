@@ -213,7 +213,7 @@ const QuestionPanel = () => {
                     type="checkbox"
                     id={`question_${index}`}
                     checked={answeredStatus[index]}
-                    className="appearance-none w-4 h-4 m-3 p-3 rounded-full border ml-8 border-gray-300 checked:bg-green-500 checked:border-transparent focus:outline-none focus:ring-2 focus:ring-green-500"
+                    className="appearance-none w-3 h-3 m-3 p-3 rounded-full border ml-8 border-gray-300 checked:bg-green-500 checked:border-transparent focus:outline-none focus:ring-2 focus:ring-green-500"
                     readOnly
                   />
                   <button
