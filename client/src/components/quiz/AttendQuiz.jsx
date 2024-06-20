@@ -112,14 +112,20 @@ const AttendQuiz = () => {
               </h1>
               <div className="flex flex-col md:flex-row">
                 <p className="md:text-md  mb-2 md:mb-0 ml-2">
-                  <span className="font-thin"> Total Questions: </span>
+                  <span className="font-thin text-gray-600">
+                    {" "}
+                    Total Questions:{" "}
+                  </span>
 
                   <span className="font-semibold">
                     {quiz.numberOfQuestions}
                   </span>
                 </p>
-                <p className="md:text-md  ml-2">
-                  <span className="font-thin"> Total Marks: </span>
+                <p className="md:text-md  md:ml-[30%]">
+                  <span className="font-thin text-gray-600 ml-[10]">
+                    {" "}
+                    Total Points:{" "}
+                  </span>
                   <span className="font-semibold">{quiz.totalMarks}</span>
                 </p>
               </div>
@@ -130,7 +136,7 @@ const AttendQuiz = () => {
               } rounded-lg`}
             >
               <button
-                className="text-gray-500 p-2 font-semibold "
+                className="text-black p-2 font-semibold "
                 onClick={() => handleStartQuiz(indexOfFirstQuiz + index)}
               >
                 Solve Challenge
@@ -152,7 +158,7 @@ const AttendQuiz = () => {
         {currentPage < totalPages && (
           <button
             onClick={handleNext}
-            className="px-4 bg-violet-700 hover:bg-violet-500 text-white hover:text-white py-2 border rounded"
+            className="px-4 bg-ind hover:bg-violet-500 text-white hover:text-white py-2 border rounded"
           >
             Next
           </button>

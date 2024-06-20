@@ -1,5 +1,8 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { BiMenu } from "react-icons/bi";
+import "./question.css";
+
 import {
   BsListCheck,
   BsArrowLeft,
@@ -182,13 +185,24 @@ const QuestionPanel = () => {
 
   return (
     <div className="flex flex-col h-screen relative font-sathoshi ">
-      <div className="h-[15%] md:h-[10%] m-4 rounded-xl bg-white flex items-center justify-between px-4 relative">
-        {/* Menu Icon */}
+      <div className="h-[15%] md:h-[10%] m-4 md:rounded-3xl rounded-2xl bg-white flex items-center justify-between px-4 relative">
+        {/* Previous Button */}
+        {/* {currentQuestion > 0 && (
+         
+        )} */}
         <button
-          className="text-gray- bg-blue-100 md:p-3 p-1.5 m-3 rounded-lg mr-3 hover:text-gray-800 focus:outline-none relative"
+          className="text-gray-600 hover:text-gray-800 md:mr-4  md:p-3 p-1.5 ml-[10%] rounded-xl focus:outline-none"
+          onClick={handlePreviousQuestion}
+        >
+          <BsArrowLeft className="h-5 w-5 " />
+        </button>
+        {/* Menu Icon */}
+
+        <button
+          className="text-gray- bg-gray-100 md:p-3 p-1.5  rounded-xl  hover:text-gray-800 focus:outline-none relative"
           onClick={handleMenuClick}
         >
-          <BsListCheck className="h-6 w-6" />
+          <BiMenu className="h-6 w-6" />
           {anchorEl && (
             <div
               ref={dropdownRef}
@@ -242,30 +256,20 @@ const QuestionPanel = () => {
           </span>
         </div>
 
-        {/* Previous Button */}
-        {currentQuestion > 0 && (
-          <button
-            className="text-gray-600 hover:text-gray-800 md:mr-4  bg-blue-100 md:p-3 p-1.5 ml-2 rounded-xl focus:outline-none"
-            onClick={handlePreviousQuestion}
-          >
-            <BsArrowLeft className="h-5 w-5 " />
-          </button>
-        )}
-
         {/* End Test Button */}
         <button
-          className="ml-auto text-gray-600  bg-blue-100 md:p-2 p-1 rounded-xl hover:text-gray-800 focus:outline-none relative"
+          className="ml-auto text-sm text-black font-medium bg-gray-100 md:p-3 p-1 mr-[3%] rounded-xl hover:text-gray-800 focus:outline-none relative"
           onClick={handleEndTest}
         >
-          End Test
+          End Round
         </button>
       </div>
 
       {/* Body */}
-      <div className="flex-1 p-2">
-        <div className="h-full flex items-center md:flex-row flex-col justify-center">
+      <div className="flex-1 p-2 ">
+        <div className="h-full flex items-center md:flex-row flex-col ">
           {/* Questions Section */}
-          <div className="md:w-[50%] md:h-[95%] w-[80%] h-[30%] mb-2 rounded-xl bg-white p-10 overflow-y-auto">
+          <div className="md:w-[40%] md:h-[95%] font-medium w-[80%] ml-4 h-[30%] mb-2 rounded-xl bg-white p-10 overflow-y-auto custom-scrollbar">
             <h2 className="mb-10">Question No: {currentQuestion + 1}</h2>
             <h2 className="">{quiz.questions[currentQuestion].question}</h2>
             {/* Mark for Review Button */}
@@ -286,14 +290,14 @@ const QuestionPanel = () => {
           </div>
 
           {/* Answer Section */}
-          <div className="md:w-[50%] overflow-y-auto md:ml-4 md:h-[95%] w-[80%] h-[60%] mb-2 rounded-xl bg-white p-10">
-            <ul className="md:mt-[1rem]">
-              <h2 className="text-lg ">Select the Correct answer</h2>
+          <div className="md:w-[57.5%] font-semibold font-satoshi overflow-y-auto md:ml-4 text-sm   md:h-[95%] w-[80%] h-[60%] mb-2 rounded-xl bg-white p-10">
+            <ul className="">
+              <h2 className=" ml-4 text-sm  ">Select the Correct answer</h2>
 
               {quiz.questions[currentQuestion].options.map((option, oIndex) => (
                 <li
                   key={oIndex}
-                  className="ml-4 mb-2 border border-gray-300 rounded-2xl p-2 md:mt-6"
+                  className="ml-4 mb-2 border w-[40%] border-gray-300 rounded-3xl p-3 md:mt-6"
                 >
                   <label className="">
                     <input
@@ -319,7 +323,7 @@ const QuestionPanel = () => {
       </div>
 
       {/* Footer */}
-      <div className="h-[15%] md:h-[10%] m-4 rounded-xl bg-white flex items-center justify-between px-4 relative">
+      <div className="h-[15%] md:h-[10%] m-3 rounded-xl bg-white flex items-center justify-between px-4 relative">
         {/* Previous Button */}
         {currentQuestion > 0 && (
           <button
