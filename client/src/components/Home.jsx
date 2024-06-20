@@ -13,7 +13,7 @@ const Home = () => {
   };
 
   return (
-    <div className="flex h-screen font-poppins ">
+    <div className="flex h-screen font-sathoshi ">
       {/* <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} /> */}
       <Sidebar1 />
 

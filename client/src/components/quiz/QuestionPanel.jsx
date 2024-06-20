@@ -181,7 +181,7 @@ const QuestionPanel = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen relative font-inter ">
+    <div className="flex flex-col h-screen relative font-sathoshi ">
       <div className="h-[15%] md:h-[10%] m-4 rounded-xl bg-white flex items-center justify-between px-4 relative">
         {/* Menu Icon */}
         <button
@@ -213,7 +213,7 @@ const QuestionPanel = () => {
                     type="checkbox"
                     id={`question_${index}`}
                     checked={answeredStatus[index]}
-                    className="appearance-none w-3 h-3 m-3 p-3 rounded-full border ml-8 border-gray-300 checked:bg-green-500 checked:border-transparent focus:outline-none focus:ring-2 focus:ring-green-500"
+                    className="appearance-none w-1 h-1 m-3 p-3 rounded-full border ml-8 border-gray-300 checked:bg-green-500 checked:border-transparent focus:outline-none focus:ring-2 focus:ring-green-500"
                     readOnly
                   />
                   <button

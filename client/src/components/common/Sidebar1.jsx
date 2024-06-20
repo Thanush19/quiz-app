@@ -4,6 +4,7 @@ import { useNavigate, useLocation, matchPath } from "react-router-dom";
 import { UserContext } from "../../context/userContext";
 import { BsX, BsPerson, BsList } from "react-icons/bs";
 import Logo from "./Logo";
+import menu from "../../assets/menu.svg";
 
 const Sidebar1 = () => {
   const nav = useNavigate();
@@ -51,42 +52,39 @@ const Sidebar1 = () => {
       )}
 
       <div
-        className={`fixed top-0 left-0 h-screen rounded-r-3xl bg-white transform ${
+        className={`fixed top-0 left-0 h-screen md:rounded-r-[36px] rounded-r-[20px]  bg-white transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } transition-transform duration-300 ease-in-out md:relative md:translate-x-0 md:w-[15rem] w-[40%] z-20`}
+        } transition-transform duration-300 ease-in-out md:relative md:translate-x-0 md:w-[20%] z-20`}
       >
-        <div className="flex justify-start items-start p-10">
-          <img
-            src={logo}
-            alt="Logo"
-            className="w-[90%] h-[50%] md:w-[100%] md:h-[10%] rounded-t-xl"
-          />
-        </div>
-        <div>
+        <p className="text-ind font-bold md:text-3xl text-xl mt-[10%] text-center ">
+          <span className="uppercase">ø</span>endo
+        </p>
+
+        <div className="mt-[30%]">
           <div
             className={`flex items-center h-[2rem] ${
               location.pathname === "/"
-                ? "border-l-4 border-violet-600 bg-gray-100 rounded-r-lg "
+                ? "border-l-4 border-ind bg-gray-50 rounded-r-lg "
                 : ""
             }`}
           >
-            <div className="flex justify-center items-center ml-[2rem]">
-              <BsList />
-              <button onClick={goToTest} className="ml-4">
-                Test
+            <div className="flex justify-center items-center ml-[11%]">
+              <img src={menu} />
+              <button onClick={goToTest} className="ml-4 text-md text-ind ">
+                Tests
               </button>
             </div>
           </div>
           <div
             className={`flex items-center mt-4 h-[2rem] ${
               isProfilePath
-                ? "border-l-4 border-violet-600 rounded-r-lg bg-gray-100 "
+                ? "border-l-4 border-ind rounded-r-lg bg-gray-100 "
                 : ""
             }`}
           >
-            <div className="flex justify-center items-center ml-[2rem]">
-              <BsPerson />
-              <button className="ml-4" onClick={goToProfile}>
+            <div className="flex justify-center items-center ml-[11%]">
+              <BsPerson className="text-ind w-[1.5rem]  h-auto" />
+              <button className="ml-4 text-ind" onClick={goToProfile}>
                 Profile
               </button>
             </div>
@@ -94,7 +92,7 @@ const Sidebar1 = () => {
         </div>
         <button
           onClick={toggleSidebar}
-          className="absolute top-0 right-0 mt-4 mr-4 md:hidden"
+          className="absolute -top-3 -right-2 mt-4 mr-4 md:hidden"
         >
           <BsX />
         </button>

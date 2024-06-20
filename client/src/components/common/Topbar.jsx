@@ -2,8 +2,10 @@ import React from "react";
 
 const Topbar = () => {
   return (
-    <div className="bg-white w-[95%] h-[3rem]  rounded-lg self-start m-5 flex items-center">
-      <h1 className="ml-5 text-md">Quizzes for You!</h1>
+    <div className="bg-white w-[95%] md:h-[10%]  rounded-xl self-start m-5 flex items-center">
+      <h1 className="ml-5 font-poppins font-normal text-black text-md">
+        Quizzes for You!
+      </h1>
     </div>
   );
 };

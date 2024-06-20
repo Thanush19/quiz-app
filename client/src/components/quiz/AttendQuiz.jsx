@@ -83,7 +83,7 @@ const AttendQuiz = () => {
   };
 
   return (
-    <div className="w-[95%] h-[90%] m-5 self-start rounded-lg p-5">
+    <div className="w-[70%] h-[90%] m-5 self-start rounded-lg p-5">
       {currentQuizzes.map((quiz, index) => {
         const attempt = quizAttempts.find(
           (attempt) =>
@@ -96,12 +96,15 @@ const AttendQuiz = () => {
         return (
           <div
             key={index}
-            className={`mb-4 p-4 flex flex-col md:flex-row ${
-              isAttempted ? "bg-orange-100" : "bg-white"
-            } rounded-lg`}
+            className={`mb-4 p-4 flex flex-col md:flex-row rounded-lg  border
+                      ${
+                        isAttempted
+                          ? "border-yellow-200 bg-amber-50"
+                          : "bg-white hover:border-yellow-200 hover:bg-amber-50 "
+                      } `}
           >
             <div className="w-full md:w-[60%]">
-              <h1 className="text-xl font-bold mb-2">
+              <h1 className="text-xl font-semibold mb-2">
                 {quiz.testName}{" "}
                 <span className="font-thin text-sm">
                   {isAttempted && `(prev. best: ${correctScore})`}
