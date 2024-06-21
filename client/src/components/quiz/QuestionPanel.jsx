@@ -192,7 +192,7 @@ const QuestionPanel = () => {
         )} */}
         <button
           className="text-gray-600 hover:text-gray-800 md:mr-4  md:p-3 p-1.5 ml-[10%] rounded-xl focus:outline-none"
-          onClick={handlePreviousQuestion}
+          onClick={handleEndTest}
         >
           <BsArrowLeft className="h-5 w-5 " />
         </button>
@@ -216,7 +216,7 @@ const QuestionPanel = () => {
         {/* End Test Button */}
         <button
           className="ml-auto text-sm text-black font-medium bg-gray-100 md:p-3 p-1 mr-[3%] rounded-xl hover:text-gray-800 focus:outline-none relative"
-          onClick={handleEndTest}
+          onClick={handleSubmitQuiz}
         >
           End Round
         </button>
@@ -338,38 +338,44 @@ const QuestionPanel = () => {
       {/* Footer */}
       <div className="h-[15%] md:h-[10%] m-3 md:mb-6 rounded-xl bg-white flex items-center justify-between px-4 relative">
         {/* Previous Button */}
-        {currentQuestion > 0 && (
+        <div className="flex-grow flex md:justify-center  rounded-3xl ">
           <button
-            className="text-violet-600 border flex p-3 bg-blue-100 rounded-2xl m-1 hover:text-gray-800 focus:outline-none"
+            className={`flex items-center  font-semibold border-2 border-gray-200 bg-gray-100  md:p-3 md:rounded-lg hover:text-gray-800 focus:outline-none ${
+              currentQuestion === 0 ? "opacity-50 cursor-not-allowed" : ""
+            }`}
             onClick={handlePreviousQuestion}
           >
-            <span>
-              <BsArrowLeft className="h-5 w-5 ml-1 " />
-            </span>
+            <BsArrowLeft className="h-5 w-5 mr-1" />
+            <span>Previous</span>
           </button>
-        )}
-
-        {/* Submit Button */}
-        <button
-          className={`text-gray- bg-blue-100 p-2 rounded-lg md:p-3 md:rounded-lg mr-3 hover:text-gray-800 focus:outline-none ${
-            currentQuestion === 0 ? "opacity-50 cursor-not-allowed" : ""
-          }`}
-          onClick={handleSubmitQuiz}
-        >
-          Save & Submit
-        </button>
+        </div>
 
         {/* Next Button */}
-        {currentQuestion < totalQuestions - 1 && (
-          <button
-            className="text-violet-600 border p-3 flex bg-blue-100 rounded-2xl m-1 hover:text-gray-800 focus:outline-none"
-            onClick={handleNextQuestion}
-          >
-            <span>
+        <div className="flex md:mr-[5%] ">
+          {currentQuestion < totalQuestions - 1 && (
+            <button
+              className={`flex items-center  font-semibold border-2 border-gray-200 bg-gray-100  md:p-3 md:rounded-lg hover:text-gray-800 focus:outline-none ${
+                currentQuestion === totalQuestions - 1
+                  ? "opacity-50 cursor-not-allowed"
+                  : ""
+              }`}
+              onClick={handleNextQuestion}
+            >
+              <span>Save & Next</span>
               <BsArrowRight className="h-5 w-5 ml-1" />
-            </span>
-          </button>
-        )}
+            </button>
+          )}
+          {currentQuestion === totalQuestions - 1 && (
+            <button
+              className={`flex items-center  font-semibold border-2 border-gray-200 bg-gray-100  md:p-3 md:rounded-lg hover:text-gray-800 focus:outline-none 
+              }`}
+              onClick={handleSubmitQuiz}
+            >
+              <span>Submit</span>
+              <BsArrowRight className="h-5 w-5 ml-1" />
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Confirmation Modal */}
