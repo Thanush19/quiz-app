@@ -232,7 +232,7 @@ const QuestionPanel = () => {
             {anchorEl && (
               <div
                 ref={dropdownRef}
-                className="absolute bg-white shadow-lg rounded-lg border w-[20%] border-gray-200 max-h-[70%] overflow-y-auto"
+                className="absolute bg-white shadow-lg rounded-lg border w-[20%] border-gray-200 md:h-[72%] overflow-y-auto"
               >
                 {quiz.questions.map((question, index) => (
                   <div
@@ -251,13 +251,13 @@ const QuestionPanel = () => {
                         </span>
                         <div className="flex flex-col  flex-nowrap ml-[35%]">
                           <span className="font-medium ">Mcq</span>
-                          <span className="font-light text-sm whitespace-nowrap text-gray-300">
+                          <span className="font-light text-xs whitespace-nowrap text-gray-300">
                             5 Points
                           </span>
                         </div>
                       </div>
                     </label>
-                    <div className="flex justify-end">
+                    <div className="flex absolute justify-end right-4">
                       <input
                         type="checkbox"
                         id={`question_${index}`}
