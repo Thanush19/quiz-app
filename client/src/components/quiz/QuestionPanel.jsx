@@ -203,50 +203,6 @@ const QuestionPanel = () => {
           onClick={handleMenuClick}
         >
           <BiMenu className="h-6 w-6" />
-          {anchorEl && (
-            <div
-              ref={dropdownRef}
-              className="absolute bg-white mt-2 shadow-lg rounded-lg border border-gray-200 sm:max-h-[20rem] md:max-h-[37rem] overflow-y-auto"
-            >
-              {quiz.questions.map((question, index) => (
-                <div
-                  key={index}
-                  className={`flex items-center p-2 md:w-[10rem] ${
-                    markedForReview[index] ? "bg-yellow-100" : ""
-                  }`}
-                >
-                  <label
-                    htmlFor={`question_${index}`}
-                    className={"ml-1 cursor-pointer "}
-                  >
-                    <span className="font-bold rounded-full border-2 border-black md:w-6 md:h-6 w-4 h-4 p-4  flex items-center justify-center">
-                      {index + 1}
-                    </span>
-                    <span className="font-bold ">Mcq</span>
-                  </label>
-                  <input
-                    type="checkbox"
-                    id={`question_${index}`}
-                    checked={answeredStatus[index]}
-                    className="appearance-none w-1 h-1 m-3 p-3 rounded-full border ml-8 border-gray-300 checked:bg-green-500 checked:border-transparent focus:outline-none focus:ring-2 focus:ring-green-500"
-                    readOnly
-                  />
-                  <button
-                    className="ml-auto"
-                    onClick={() => toggleMarkedForReview(index)}
-                  >
-                    <BsBookmark
-                      className={`h-6 w-6 ${
-                        markedForReview[index]
-                          ? "text-yellow-600"
-                          : "text-gray-400"
-                      }`}
-                    />
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
         </button>
 
         {/* Timer */}
@@ -267,26 +223,83 @@ const QuestionPanel = () => {
       </div>
 
       {/* Body */}
-      <div className="flex-1 p-2  font-medium ">
+      <div className="flex-1  font-medium ">
         <div className="h-full flex items-center md:flex-row flex-col ">
           {/* Questions Section */}
-          <div className="md:w-[40%] md:h-[100%] w-[80%] ml-4 h-[30%] mb-2 rounded-xl bg-white p-10 overflow-y-auto custom-scrollbar">
-            <h2 className="mb-10">Question No: {currentQuestion + 1}</h2>
-            <h2 className="">{quiz.questions[currentQuestion].question}</h2>
-            {/* Mark for Review Button */}
-            <div className="flex items-center mt-4">
-              <button
-                className={`text-sm  py-1 px-3 rounded-lg ${
-                  markedForReview[currentQuestion]
-                    ? "bg-yellow-200 text-yellow-600"
-                    : "bg-gray-200 text-gray-600"
-                } hover:bg-yellow-200 hover:text-yellow-600 focus:outline-none`}
-                onClick={() => toggleMarkedForReview(currentQuestion)}
+
+          <div className="md:w-[40%] md:h-[100%] w-[80%] ml-4 h-[30%] mb-2 rounded-xl bg-white overflow-y-auto custom-scrollbar">
+            {/* dropdown           */}
+            {anchorEl && (
+              <div
+                ref={dropdownRef}
+                className="absolute bg-white shadow-lg rounded-lg border w-[20%] border-gray-200 max-h-[70%] overflow-y-auto"
               >
-                {markedForReview[currentQuestion]
-                  ? "Marked for Review"
-                  : "Mark for Review"}
-              </button>
+                {quiz.questions.map((question, index) => (
+                  <div
+                    key={index}
+                    className={`flex items-center p-2 md:w-[10rem] ${
+                      markedForReview[index] ? "bg-yellow-100" : ""
+                    }`}
+                  >
+                    <label
+                      htmlFor={`question_${index}`}
+                      className={"ml-1 cursor-pointer "}
+                    >
+                      <div className="flex flex-row ml-[5%]">
+                        <span className="font-bold rounded-full border-2 border-black md:w-6 md:h-6 w-4 h-4 p-4  flex items-center justify-center">
+                          {index + 1}
+                        </span>
+                        <div className="flex flex-col  flex-nowrap ml-[35%]">
+                          <span className="font-medium ">Mcq</span>
+                          <span className="font-light text-sm whitespace-nowrap text-gray-300">
+                            5 Points
+                          </span>
+                        </div>
+                      </div>
+                    </label>
+                    <div className="flex justify-end">
+                      <input
+                        type="checkbox"
+                        id={`question_${index}`}
+                        checked={answeredStatus[index]}
+                        className="appearance-none w-1 h-1 m-3 p-3 rounded-full border ml-8 border-gray-300 checked:bg-green-500 checked:border-transparent focus:outline-none focus:ring-2 focus:ring-green-500"
+                        readOnly
+                      />
+                      <button
+                        className=""
+                        onClick={() => toggleMarkedForReview(index)}
+                      >
+                        <BsBookmark
+                          className={`h-6 w-6 ${
+                            markedForReview[index]
+                              ? "text-yellow-600"
+                              : "text-gray-400"
+                          }`}
+                        />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+            <div className="p-10 ">
+              <h2 className="mb-10">Question No: {currentQuestion + 1}</h2>
+              <h2 className="">{quiz.questions[currentQuestion].question}</h2>
+              {/* Mark for Review Button */}
+              <div className="flex items-center mt-4">
+                <button
+                  className={`text-sm  py-1 px-3 rounded-lg ${
+                    markedForReview[currentQuestion]
+                      ? "bg-yellow-200 text-yellow-600"
+                      : "bg-gray-200 text-gray-600"
+                  } hover:bg-yellow-200 hover:text-yellow-600 focus:outline-none`}
+                  onClick={() => toggleMarkedForReview(currentQuestion)}
+                >
+                  {markedForReview[currentQuestion]
+                    ? "Marked for Review"
+                    : "Mark for Review"}
+                </button>
+              </div>
             </div>
           </div>
 
