@@ -217,11 +217,12 @@ const QuestionPanel = () => {
                 >
                   <label
                     htmlFor={`question_${index}`}
-                    className={`ml-1 cursor-pointer ${
-                      answeredStatus[index] ? "text-green-500" : "text-gray-500"
-                    }`}
+                    className={"ml-1 cursor-pointer "}
                   >
-                    <span className="font-bold">{index + 1} Mcq</span>
+                    <span className="font-bold rounded-full border-2 border-black md:w-6 md:h-6 w-4 h-4 p-4  flex items-center justify-center">
+                      {index + 1}
+                    </span>
+                    <span className="font-bold ">Mcq</span>
                   </label>
                   <input
                     type="checkbox"
@@ -266,16 +267,16 @@ const QuestionPanel = () => {
       </div>
 
       {/* Body */}
-      <div className="flex-1 p-2 ">
+      <div className="flex-1 p-2  font-medium ">
         <div className="h-full flex items-center md:flex-row flex-col ">
           {/* Questions Section */}
-          <div className="md:w-[40%] md:h-[95%] font-medium w-[80%] ml-4 h-[30%] mb-2 rounded-xl bg-white p-10 overflow-y-auto custom-scrollbar">
+          <div className="md:w-[40%] md:h-[100%] w-[80%] ml-4 h-[30%] mb-2 rounded-xl bg-white p-10 overflow-y-auto custom-scrollbar">
             <h2 className="mb-10">Question No: {currentQuestion + 1}</h2>
             <h2 className="">{quiz.questions[currentQuestion].question}</h2>
             {/* Mark for Review Button */}
             <div className="flex items-center mt-4">
               <button
-                className={`text-sm font-medium py-1 px-3 rounded-lg ${
+                className={`text-sm  py-1 px-3 rounded-lg ${
                   markedForReview[currentQuestion]
                     ? "bg-yellow-200 text-yellow-600"
                     : "bg-gray-200 text-gray-600"
@@ -290,14 +291,14 @@ const QuestionPanel = () => {
           </div>
 
           {/* Answer Section */}
-          <div className="md:w-[57.5%] font-semibold font-satoshi overflow-y-auto md:ml-4 text-sm   md:h-[95%] w-[80%] h-[60%] mb-2 rounded-xl bg-white p-10">
+          <div className="md:w-[57.5%]   overflow-y-auto md:ml-4 text-sm   md:h-[100%]  w-[80%] h-[60%] mb-2 rounded-xl bg-white p-10">
             <ul className="">
               <h2 className=" ml-4 text-sm  ">Select the Correct answer</h2>
 
               {quiz.questions[currentQuestion].options.map((option, oIndex) => (
                 <li
                   key={oIndex}
-                  className="ml-4 mb-2 border w-[40%] border-gray-300 rounded-3xl p-3 md:mt-6"
+                  className="ml-4 mb-2 border w-[40%] border-gray-300 rounded-3xl p-3 md:mt-6 flex  "
                 >
                   <label className="">
                     <input
@@ -305,15 +306,14 @@ const QuestionPanel = () => {
                       name={`question_${currentQuestion}`}
                       value={option}
                       checked={answers[currentQuestion] === option}
-                      style={{
-                        color:
-                          answers[currentQuestion] === option
-                            ? "black"
-                            : "initial",
-                      }}
+                      className={`appearance-none md:h-4 md:w-4 h-2 w-2  md:ml-6  border-[1px] rounded-full ${
+                        answers[currentQuestion] === option
+                          ? "border-black bg-black"
+                          : "border-black"
+                      }`}
                       onChange={handleOptionChange}
                     />
-                    <span className="ml-2">{option}</span>
+                    <span className="md:ml-6 ml-3">{option} ;</span>
                   </label>
                 </li>
               ))}
@@ -323,7 +323,7 @@ const QuestionPanel = () => {
       </div>
 
       {/* Footer */}
-      <div className="h-[15%] md:h-[10%] m-3 rounded-xl bg-white flex items-center justify-between px-4 relative">
+      <div className="h-[15%] md:h-[10%] m-3 md:mb-6 rounded-xl bg-white flex items-center justify-between px-4 relative">
         {/* Previous Button */}
         {currentQuestion > 0 && (
           <button
