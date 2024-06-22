@@ -106,15 +106,14 @@ const AttendQuiz = () => {
             <div className="w-full md:w-[60%]">
               <h1 className="text-xl font-semibold mb-2">
                 {quiz.testName}{" "}
-                <span className="font-thin text-sm">
+                <span className="font-thin md:text-sm text-[10px]">
                   {isAttempted && `(prev. best: ${correctScore})`}
                 </span>
               </h1>
-              <div className="flex flex-col md:flex-row">
-                <p className="md:text-md  mb-2 md:mb-0 ml-2">
+              <div className="flex flex-col  md:text-nowrap md:flex-row">
+                <p className="md:text-md   mb-2 md:mb-0 ml-2">
                   <span className="font-thin text-gray-600">
-                    {" "}
-                    Total Questions:{" "}
+                    Total Questions:
                   </span>
 
                   <span className="font-semibold">
@@ -122,8 +121,7 @@ const AttendQuiz = () => {
                   </span>
                 </p>
                 <p className="md:text-md  md:ml-[30%]">
-                  <span className="font-thin text-gray-600 ml-[10]">
-                    {" "}
+                  <span className="font-thin text-gray-600 ml-2">
                     Total Points:{" "}
                   </span>
                   <span className="font-semibold">{quiz.totalMarks}</span>
@@ -133,7 +131,7 @@ const AttendQuiz = () => {
             <div
               className={`mt-2 md:mt-0 my-auto mx-auto md:ml-auto border hover:bg-yellow-300 hover:text-black ${
                 isAttempted ? "bg-yellow-400" : "bg-white"
-              } rounded-lg`}
+              } rounded-xl`}
             >
               <button
                 className="text-black p-2 font-semibold "

@@ -185,29 +185,29 @@ const QuestionPanel = () => {
 
   return (
     <div className="flex flex-col h-screen relative font-sathoshi ">
-      <div className="h-[15%] md:h-[10%] m-4 md:rounded-3xl rounded-2xl bg-white flex items-center justify-between px-4 relative">
+      <div className="h-[15%] md:h-[10%] md:p-0.1 p-3 m-4 md:rounded-3xl rounded-2xl bg-white flex items-center justify-between  relative">
         {/* Previous Button */}
         {/* {currentQuestion > 0 && (
          
         )} */}
         <button
-          className="text-gray-600 hover:text-gray-800 md:mr-4  md:p-3 p-1.5 ml-[10%] rounded-xl focus:outline-none"
+          className="text-black bg-gray-100  hover:text-gray-800 md:mr-4  md:p-3 p-1 ml-[10%] mr-4 rounded-xl focus:outline-none"
           onClick={handleEndTest}
         >
-          <BsArrowLeft className="h-5 w-5 " />
+          <BsArrowLeft className="md:h-5 md:w-5 h-4 w-4 " />
         </button>
         {/* Menu Icon */}
 
         <button
-          className="text-gray- bg-gray-100 md:p-3 p-1.5  rounded-xl  hover:text-gray-800 focus:outline-none relative"
+          className="text-gray bg-gray-100 md:p-3 p-1.5  rounded-xl  hover:text-gray-800 focus:outline-none relative"
           onClick={handleMenuClick}
         >
-          <BiMenu className="h-6 w-6" />
+          <BiMenu className="md:h-5 md:w-5 h-4 w-4 " />
         </button>
 
         {/* Timer */}
-        <div className="flex md:flex-grow sm:w-[2rem]  items-center justify-center">
-          <BsClock className="md:h-6 md:w-6 text-gray-600 mr-2" />
+        <div className="flex md:flex-grow sm:w-[2rem]  ml-6  md:ml-1 items-center justify-center">
+          <BsClock className="md:h-5 md:w-5 h-4 w-4  mr-2 text-gray-600 md:mr-2" />
           <span className="text-gray-600 sm:mr-5">
             {formatTime(elapsedTime)}
           </span>
@@ -215,7 +215,7 @@ const QuestionPanel = () => {
 
         {/* End Test Button */}
         <button
-          className="ml-auto text-sm text-black font-medium bg-gray-100 md:p-3 p-1 mr-[3%] rounded-xl hover:text-gray-800 focus:outline-none relative"
+          className="ml-auto text-sm text-black font-medium bg-gray-100 md:p-3 p-3 mr-[3%] rounded-xl hover:text-gray-800 focus:outline-none relative"
           onClick={handleSubmitQuiz}
         >
           End Round
@@ -227,12 +227,12 @@ const QuestionPanel = () => {
         <div className="h-full flex items-center md:flex-row flex-col ">
           {/* Questions Section */}
 
-          <div className="md:w-[40%] md:h-[100%] w-[80%] ml-4 h-[30%] mb-2 rounded-xl bg-white overflow-y-auto custom-scrollbar">
+          <div className="md:w-[40%] md:h-[100%]  w-[80%] md:ml-4 h-[30%] mb-2 rounded-xl bg-white overflow-y-auto custom-scrollbar">
             {/* dropdown           */}
             {anchorEl && (
               <div
                 ref={dropdownRef}
-                className="absolute bg-white shadow-lg rounded-lg border w-[20%] border-gray-200 md:h-[72%] overflow-y-auto"
+                className="absolute bg-white shadow-lg rounded-lg border md:w-[30%] w-[50%] border-gray-200 h-[138%] md:h-[72%] overflow-y-auto"
               >
                 {quiz.questions.map((question, index) => (
                   <div
@@ -282,11 +282,13 @@ const QuestionPanel = () => {
                 ))}
               </div>
             )}
-            <div className="p-10 ">
-              <h2 className="mb-10">Question No: {currentQuestion + 1}</h2>
+            <div className="md:p-10 p-5 ">
+              <h2 className="md:mb-10 mb-4">
+                Question No: {currentQuestion + 1}
+              </h2>
               <h2 className="">{quiz.questions[currentQuestion].question}</h2>
               {/* Mark for Review Button */}
-              <div className="flex items-center mt-4">
+              <div className="flex items-center md:mt-4 mt-2">
                 <button
                   className={`text-sm  py-1 px-3 rounded-lg ${
                     markedForReview[currentQuestion]
@@ -304,14 +306,16 @@ const QuestionPanel = () => {
           </div>
 
           {/* Answer Section */}
-          <div className="md:w-[57.5%]   overflow-y-auto md:ml-4 text-sm   md:h-[100%]  w-[80%] h-[60%] mb-2 rounded-xl bg-white p-10">
+          <div className="md:w-[57.5%]   overflow-y-auto md:ml-4 text-sm   md:h-[100%]  w-[80%] h-[60%] mb-2 rounded-xl bg-white md:p-10 p-5 ">
             <ul className="">
-              <h2 className=" ml-4 text-sm  ">Select the Correct answer</h2>
+              <h2 className=" md:ml-4 text-sm mb-5 md:mb-[0.1px]  ">
+                Select the Correct answer
+              </h2>
 
               {quiz.questions[currentQuestion].options.map((option, oIndex) => (
                 <li
                   key={oIndex}
-                  className="ml-4 mb-2 border w-[40%] border-gray-300 rounded-3xl p-3 md:mt-6 flex  "
+                  className="mb-2 border  md:min-w-[40%] border-gray-300 rounded-3xl p-3 md:mt-6 flex"
                 >
                   <label className="">
                     <input
@@ -319,7 +323,7 @@ const QuestionPanel = () => {
                       name={`question_${currentQuestion}`}
                       value={option}
                       checked={answers[currentQuestion] === option}
-                      className={`appearance-none md:h-4 md:w-4 h-2 w-2  md:ml-6  border-[1px] rounded-full ${
+                      className={`appearance-none md:h-4 md:w-4 h-3 w-3  md:ml-6  border-[1px] rounded-full ${
                         answers[currentQuestion] === option
                           ? "border-black bg-black"
                           : "border-black"
@@ -336,16 +340,17 @@ const QuestionPanel = () => {
       </div>
 
       {/* Footer */}
-      <div className="h-[15%] md:h-[10%] m-3 md:mb-6 rounded-xl bg-white flex items-center justify-between px-4 relative">
+      {/* <div className="h-[15%] md:h-[10%] md:p-0.1 p-3 m-4 md:rounded-3xl rounded-2xl bg-white flex items-center justify-between  relative"></div> */}
+      <div className="h-[15%] md:h-[10%] md:p-0.1 m-4 p-3 -mt-5  md:mb-6 rounded-2xl bg-white flex items-center justify-between relative">
         {/* Previous Button */}
         <div className="flex-grow flex md:justify-center  rounded-3xl ">
           <button
-            className={`flex items-center  font-semibold border-2 border-gray-200 bg-gray-100  md:p-3 md:rounded-lg hover:text-gray-800 focus:outline-none ${
+            className={`flex items-center  font-semibold border-2 border-gray-200 bg-gray-100 p-2 rounded-2xl text-black md:p-3 md:rounded-lg hover:text-gray-800 focus:outline-none ${
               currentQuestion === 0 ? "opacity-50 cursor-not-allowed" : ""
             }`}
             onClick={handlePreviousQuestion}
           >
-            <BsArrowLeft className="h-5 w-5 mr-1" />
+            <BsArrowLeft className="h-5 w-5 mr-1 text-black" />
             <span>Previous</span>
           </button>
         </div>
@@ -354,7 +359,7 @@ const QuestionPanel = () => {
         <div className="flex md:mr-[5%] ">
           {currentQuestion < totalQuestions - 1 && (
             <button
-              className={`flex items-center  font-semibold border-2 border-gray-200 bg-gray-100  md:p-3 md:rounded-lg hover:text-gray-800 focus:outline-none ${
+              className={`flex items-center  font-semibold border-2 border-gray-200 bg-gray-100 p-2 rounded-2xl  md:p-3 md:rounded-lg hover:text-gray-800 focus:outline-none ${
                 currentQuestion === totalQuestions - 1
                   ? "opacity-50 cursor-not-allowed"
                   : ""

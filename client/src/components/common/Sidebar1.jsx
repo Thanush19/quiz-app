@@ -54,7 +54,7 @@ const Sidebar1 = () => {
       <div
         className={`fixed top-0 left-0 h-screen md:rounded-r-[36px] rounded-r-[20px]  bg-white transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } transition-transform duration-300 ease-in-out md:relative md:translate-x-0 md:w-[20%] z-20`}
+        } transition-transform duration-300 ease-in-out md:relative md:translate-x-0 md:w-[20%] w-[40%] z-20`}
       >
         <p className="text-ind font-bold md:text-3xl text-xl mt-[10%] text-center ">
           <span className="uppercase">ø</span>endo
