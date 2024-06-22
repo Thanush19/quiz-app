@@ -1,4 +1,6 @@
+// App.js
 import { Routes, Route, Navigate } from "react-router-dom";
+import { useContext, useEffect } from "react";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Home from "./components/Home";
@@ -6,10 +8,16 @@ import QuestionPanel from "./components/quiz/QuestionPanel";
 import TestResult from "./components/quiz/TestResult";
 import Profile from "./components/Profile";
 import { UserContext } from "./context/userContext";
-import { useContext } from "react";
 
 function App() {
-  const { user } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
+
+  useEffect(() => {
+    const savedUser = localStorage.getItem("user");
+    if (savedUser) {
+      setUser(JSON.parse(savedUser));
+    }
+  }, [setUser]);
 
   return (
     <Routes>

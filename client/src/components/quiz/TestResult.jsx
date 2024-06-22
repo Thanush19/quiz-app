@@ -58,7 +58,7 @@ const TestResult = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center font-poppins">
-      <div className="w-[90%] md:h-14 h-10 md:mt-10 mt-5 rounded-3xl bg-white"></div>
+      <div className="w-[90%] md:h-12 h-10 md:mt-5 mt-2 rounded-3xl bg-white"></div>
 
       <div className="flex flex-col justify-center items-center w-full px-4 md:w-[80%] lg:w-[60%] xl:w-[50%] min-h-[calc(100vh-8rem)]">
         <h1 className="md:text-3xl text-md font-bold text-green-600 mt-4">
@@ -151,7 +151,7 @@ const TestResult = () => {
         </button>
       </div>
 
-      <div className="w-[90%] md:h-14 h-10 mb-5 md:mb-10  mt-2 rounded-3xl bg-white"></div>
+      <div className="w-[90%] md:h-12 h-10 mb-5 md:mb-5  mt-2 rounded-3xl bg-white"></div>
     </div>
   );
 };

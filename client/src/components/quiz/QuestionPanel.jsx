@@ -185,7 +185,7 @@ const QuestionPanel = () => {
 
   return (
     <div className="flex flex-col h-screen relative font-sathoshi ">
-      <div className="h-[15%] md:h-[10%] md:p-0.1 p-3 m-4 md:rounded-3xl rounded-2xl bg-white flex items-center justify-between  relative">
+      <div className="h-[10%] md:h-[10%] md:p-0.1 p-3 m-4 md:rounded-3xl rounded-2xl bg-white flex items-center justify-between  relative">
         {/* Previous Button */}
         {/* {currentQuestion > 0 && (
          
@@ -306,16 +306,16 @@ const QuestionPanel = () => {
           </div>
 
           {/* Answer Section */}
-          <div className="md:w-[57.5%]   overflow-y-auto md:ml-4 text-sm   md:h-[100%]  w-[80%] h-[60%] mb-2 rounded-xl bg-white md:p-10 p-5 ">
+          <div className="md:w-[57.5%]   overflow-y-auto md:ml-4    md:h-[100%]  w-[80%] h-[60%] mb-2 rounded-xl bg-white md:p-10 p-5 ">
             <ul className="">
-              <h2 className=" md:ml-4 text-sm mb-5 md:mb-[0.1px]  ">
+              <h2 className=" md:ml-4   mb-5 md:mb-[0.1px]  ">
                 Select the Correct answer
               </h2>
 
               {quiz.questions[currentQuestion].options.map((option, oIndex) => (
                 <li
                   key={oIndex}
-                  className="mb-2 border  md:min-w-[40%] border-gray-300 rounded-3xl p-3 md:mt-6 flex"
+                  className="mb-2 border  md:max-w-[40%] border-gray-300 rounded-3xl p-3 md:mt-6 flex"
                 >
                   <label className="">
                     <input
@@ -341,7 +341,7 @@ const QuestionPanel = () => {
 
       {/* Footer */}
       {/* <div className="h-[15%] md:h-[10%] md:p-0.1 p-3 m-4 md:rounded-3xl rounded-2xl bg-white flex items-center justify-between  relative"></div> */}
-      <div className="h-[15%] md:h-[10%] md:p-0.1 m-4 p-3 -mt-5  md:mb-6 rounded-2xl bg-white flex items-center justify-between relative">
+      <div className="h-[10%] md:h-[5rem] md:p-0.1 md:mt-6 m-4 p-3 -mt-5  md:mb-6 rounded-2xl bg-white flex items-center justify-between relative">
         {/* Previous Button */}
         <div className="flex-grow flex md:justify-center  rounded-3xl ">
           <button
@@ -372,7 +372,7 @@ const QuestionPanel = () => {
           )}
           {currentQuestion === totalQuestions - 1 && (
             <button
-              className={`flex items-center  font-semibold border-2 border-gray-200 bg-gray-100  md:p-3 md:rounded-lg hover:text-gray-800 focus:outline-none 
+              className={`flex items-center  font-semibold border-2 border-gray-200 bg-gray-100 p-2 rounded-2xl  md:p-3 md:rounded-lg hover:text-gray-800 focus:outline-none 
               }`}
               onClick={handleSubmitQuiz}
             >

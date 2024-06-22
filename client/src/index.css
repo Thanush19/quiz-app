@@ -5,3 +5,9 @@
 body {
   @apply bg-gray-100; /* Apply Tailwind CSS class */
 }
+@font-face {
+  font-family: "Satoshi";
+  src: url("./assets/TTF/Satoshi-Variable.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
