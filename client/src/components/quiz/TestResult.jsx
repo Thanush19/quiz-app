@@ -1,10 +1,5 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Doughnut } from "react-chartjs-2";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-import ChartDataLabels from "chartjs-plugin-datalabels";
-
-ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
 
 const TestResult = () => {
   const location = useLocation();
@@ -14,136 +9,131 @@ const TestResult = () => {
     totalQuestions,
     correctCount,
     wrongCount,
-    unattemptedCount,
     testName,
-    totalTimeTaken,
     averageTimePerQuestion,
-    timeTakenForEachQuestion,
   } = location.state;
-
-  // Data for the first donut chart (Wrong Answers and Total Questions)
-  const firstChartData = {
-    labels: ["Wrong Answers", "Total Questions"],
-    datasets: [
-      {
-        label: "Questions",
-        data: [wrongCount, totalQuestions - wrongCount],
-        backgroundColor: ["#FF0000", "#E0E7FF"],
-        hoverBackgroundColor: ["#FF0000", "#E0E7FF"],
-        borderWidth: 1,
-      },
-    ],
-  };
-
-  const secondChartData = {
-    labels: ["Correct Answers", "Total Questions"],
-    datasets: [
-      {
-        label: "Answers",
-        data: [correctCount, totalQuestions - correctCount],
-        backgroundColor: ["#00FF00", "#E0E7FF"],
-        hoverBackgroundColor: ["#00FF00", "#E0E7FF"],
-        borderWidth: 1,
-      },
-    ],
-  };
-
-  // Options for reducing the thickness of the donuts and adding percentage labels
-  const options = {
-    cutout: "80%", // This makes the donut chart thinner
-    plugins: {
-      datalabels: {
-        display: false, // Disable datalabels
-      },
-      tooltip: {
-        callbacks: {
-          label: function (context) {
-            const total = context.dataset.data.reduce(
-              (acc, val) => acc + val,
-              0
-            );
-            const percentage = ((context.parsed / total) * 100).toFixed(2);
-            return `${percentage}%`;
-          },
-        },
-      },
-    },
-  };
 
   const handleBackToHome = () => {
     navigate("/");
   };
 
-  return (
-    <>
-      <div className="h-screen flex flex-col items-center justify-center font-inter ">
-        <div className="bg-white h-[8%]  w-[90%] mt-3 mb-2 rounded-lg"></div>
+  const getDoughnutChart = (attended, total, color, percentageColor) => {
+    const percentage = (attended / total) * 100;
+    const remainingPercentage = 100 - percentage;
 
-        {/* <h1 className="text-3xl font-bold mb-4">Quiz Results: {testName}</h1> */}
-        <h1 className="text-3xl font-bold mb-4 text-green-600">
+    return (
+      <svg width="200" height="200" viewBox="0 0 36 36">
+        <circle
+          cx="18"
+          cy="18"
+          r="15.91549431"
+          fill="transparent"
+          stroke="#E0E7FF"
+          strokeWidth="4"
+        />
+        <circle
+          cx="18"
+          cy="18"
+          r="15.91549431"
+          fill="transparent"
+          stroke={color}
+          strokeWidth="4"
+          strokeDasharray={`${percentage} ${remainingPercentage}`}
+          strokeDashoffset="75"
+          strokeLinecap="round"
+        />
+        <text
+          x="18"
+          y="20.35"
+          textAnchor="middle"
+          fontSize="8px"
+          fill={percentageColor}
+          fontWeight="bold"
+        >
+          {attended}
+        </text>
+      </svg>
+    );
+  };
+
+  return (
+    <div className="h-screen flex flex-col items-center justify-center font-poppins">
+      <div className="bg-white h-[8%] w-[90%] top-0 absolute mt-3 mb-2 rounded-lg"></div>
+
+      <div className=" absolute top-[15%] flex flex-col justify-center items-center">
+        <h1 className="text-3xl font-bold  text-green-600">
           Thank you for taking the test
         </h1>
         <h1 className="text-3xl font-bold mb-4 md:mt-[1rem] text-green-600">
-          Your Report{" "}
+          Your Report
         </h1>
-        <div className="flex flex-col w-[50%]  md:flex-row justify-around mt-10">
-          <div className="md:w-1/3 h-full rounded-xl bg-white p-4 mt-5">
-            <h2 className="text-xl font-bold mb-4">Questions Attended</h2>
-            <div className="">
-              <Doughnut data={firstChartData} options={options} />
+        <div className="flex flex-col   md:w-[150%] md:flex-row justify-around mt-10">
+          <div className="md:w-1/3 rounded-xl bg-white p-4 mt-5">
+            <h2 className="text-xl font-bold mb-4 text-nowrap">
+              Questions Attended
+            </h2>
+            <div className="flex justify-center">
+              {getDoughnutChart(
+                wrongCount + correctCount,
+                totalQuestions,
+                "#DC6C2D",
+                "#DC6C2D"
+              )}
             </div>
-            <div className="text-center mt-4">
-              <div className="flex flex-row justify-center items-center">
-                <div className="bg-red-600 w-3 h-3 mr-2"></div>
-                <p>Wrongly Answered: {wrongCount}</p>
+            <div className="flex flex-col justify-start mt-4">
+              <div className="flex flex-row justify-start items-center">
+                <div className="bg-[#DC6C2D] w-3 h-3 mr-2"></div>
+                <p>Questions Attended: {wrongCount + correctCount}</p>
               </div>
               <hr className="w-full my-4 border-t-2 border-gray-400" />
-
-              <div className="flex flex-row justify-center items-center">
-                <div className="bg-gray-400 w-3 h-3 mr-2"></div>
-
-                <p>Total Questions: {totalQuestions}</p>
+              <div className="flex flex-row justify-stat items-center">
+                <div className="bg-[#777777] w-3 h-3 mr-2"></div>
+                <div className="justify-end">
+                  <p>Total Questions: {totalQuestions}</p>
+                </div>
               </div>
             </div>
           </div>
-          <div className="w-full rounded-xl md:w-1/3 h-full bg-white mt-5 p-4">
+          <div className="w-full rounded-xl md:w-1/3  bg-white mt-5 p-4">
             <h2 className="text-xl font-bold mb-4">Correct Answers</h2>
-            <div className="">
-              <Doughnut data={secondChartData} options={options} />
+            <div className="flex justify-center">
+              {getDoughnutChart(
+                correctCount,
+                totalQuestions,
+                "#1B9D34",
+
+                "#1B9D34"
+              )}
             </div>
             <div className="text-center mt-4">
-              <div className="flex flex-row justify-center items-center">
-                <div className="bg-green-400 w-3 mr-2 h-3"></div>
+              <div className="flex flex-row justify-start items-center">
+                <div className="bg-[#1B9D34] w-3 mr-2 h-3"></div>
                 <p>Correctly Answered: {correctCount}</p>
               </div>
               <hr className="w-full my-4 border-t-2 border-gray-400" />
-
-              <div className="flex flex-row justify-center items-center">
-                <div className="bg-gray-400 w-3 mr-2 h-3"></div>
-
-                <p>Total Questions: {totalQuestions}</p>
+              <div className="flex flex-row justify-start items-center">
+                <div className="bg-[#777777] w-3 mr-2 h-3"></div>
+                <div className="justify-end">
+                  <p>Total Questions: {totalQuestions}</p>
+                </div>{" "}
               </div>
             </div>
           </div>
         </div>
-
-        {/* <h2 className="mt-10 text-2xl font-bold">
-          Time Taken for Each Question:
-        </h2> */}
-        <p className="mt-7 font-semibold  ">
+        {/* <p className="mt-7 font-semibold">
           Average Time Per Question:
           <span className="font-bold"> {averageTimePerQuestion} seconds</span>
-        </p>
-
+        </p> */}
         <button
-          className="mt-8 bg-violet-500 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded"
+          className="m-3 bg-ind hover:bg-violet-700 text-white font-bold py-2 px-4 rounded"
           onClick={handleBackToHome}
         >
           Back to Home
         </button>
-        <div className="bg-white h-[8%] mt-10 w-[90%] mb-6 rounded-lg"></div>
       </div>
-    </>
+
+      <div className="bg-white h-[8%] absolute bottom-0  w-[90%] mb-6 rounded-lg"></div>
+    </div>
   );
 };
 
