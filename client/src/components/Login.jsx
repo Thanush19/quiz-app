@@ -59,7 +59,9 @@ function Login() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded shadow-md w-full max-w-sm">
-        <h2 className="text-2xl font-bold mb-6 text-violet-700 ">Login</h2>
+        <h2 className="text-2xl font-bold mb-6 text-violet-700 text-center">
+          Login
+        </h2>
         {loginError && <div className="text-red-500 mb-4">{loginError}</div>}
         <form onSubmit={handleLogin}>
           <div className="mb-4">
@@ -75,7 +77,7 @@ function Login() {
             />
           </div>
           <div className="mb-4 relative">
-            <label className="block text-violet-700  text-sm font-bold mb-2">
+            <label className="block text-violet-700 text-sm font-bold mb-2">
               Password
             </label>
             <input
@@ -87,7 +89,7 @@ function Login() {
             />
             <button
               type="button"
-              className="absolute inset-y-0 right-0 px-3  py-2 text-gray-500 focus:outline-none"
+              className="absolute inset-y-0 right-4  top-6  flex items-center text-gray-500 focus:outline-none"
               onClick={togglePasswordVisibility}
             >
               {showPassword ? <BsEyeSlash /> : <BsEye />}
@@ -107,7 +109,7 @@ function Login() {
               </button>
             )}
           </div>
-          <Link to="/register" className="mt-6 text-violet-700 ">
+          <Link to="/register" className="mt-6 text-violet-700">
             Don't have an account?
           </Link>
         </form>

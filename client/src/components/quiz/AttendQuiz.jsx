@@ -83,7 +83,7 @@ const AttendQuiz = () => {
   };
 
   return (
-    <div className="w-[70%] h-[90%] m-5 self-start rounded-lg p-5">
+    <div className="md:w-[70%]  w-[90%] h-[90%] m-5 self-start rounded-lg p-5">
       {currentQuizzes.map((quiz, index) => {
         const attempt = quizAttempts.find(
           (attempt) =>
@@ -106,9 +106,9 @@ const AttendQuiz = () => {
             <div className="w-full md:w-[60%]">
               <h1 className="text-xl font-semibold mb-2">
                 {quiz.testName}{" "}
-                <span className="font-thin md:text-sm text-[10px]">
+                {/* <span className="font-thin md:text-sm text-[10px]">
                   {isAttempted && `(prev. best: ${correctScore})`}
-                </span>
+                </span> */}
               </h1>
               <div className="flex flex-col  md:text-nowrap md:flex-row">
                 <p className="md:text-md   mb-2 md:mb-0 ml-2">
@@ -134,7 +134,7 @@ const AttendQuiz = () => {
               } rounded-xl`}
             >
               <button
-                className="text-black p-2 font-semibold "
+                className="text-black md:p-2 p-1 font-semibold "
                 onClick={() => handleStartQuiz(indexOfFirstQuiz + index)}
               >
                 Solve Challenge
@@ -145,22 +145,25 @@ const AttendQuiz = () => {
       })}
 
       <div className="flex justify-between mt-4">
-        {currentPage > 1 && (
-          <button
-            onClick={handlePrevious}
-            className="px-4 bg-purple-500 hover:bg-violet-500 hover:text-white py-2 border rounded"
-          >
-            Previous
-          </button>
-        )}
-        {currentPage < totalPages && (
-          <button
-            onClick={handleNext}
-            className="px-4 bg-ind hover:bg-violet-500 text-white hover:text-white py-2 border rounded"
-          >
-            Next
-          </button>
-        )}
+        <button
+          onClick={handlePrevious}
+          className={`px-4 bg-ind hover:bg-violet-500 hover:text-white py-2 border rounded ${
+            currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""
+          }`}
+          disabled={currentPage === 1}
+        >
+          Previous
+        </button>
+
+        <button
+          onClick={handleNext}
+          className={`px-4 bg-indigo-500 hover:bg-violet-500 text-white hover:text-white py-2 border rounded ${
+            currentPage === totalPages ? "opacity-50 cursor-not-allowed" : ""
+          }`}
+          disabled={currentPage === totalPages}
+        >
+          Next
+        </button>
       </div>
     </div>
   );

@@ -47,9 +47,9 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         <div className="flex-grow flex flex-col justify-center items-center mt-4 w-full">
           <button
             onClick={goToProfile}
-            className={`flex items-center p-2 w-full text-left ${getBorderStyle(
+            className={`flex items-center p-2 md:p-4 w-full text-left ${getBorderStyle(
               `/profile/${user?.id}`
-            )} hover:bg-gray-200`}
+            )} hover:bg-gray-100`}
           >
             {/* <BsPerson className="mr-2" size={20} />  */}
             Profile
@@ -57,9 +57,9 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
 
           <button
             onClick={goToTest}
-            className={`flex items-center p-2 w-full mt-2 text-left ${getBorderStyle(
+            className={`flex items-center p-2 md:p-4 w-full mt-2 text-left ${getBorderStyle(
               "/"
-            )} hover:bg-gray-200`}
+            )} hover:bg-gray-100`}
           >
             {/* <BsList className="mr-2" size={20} />  */}
             Test

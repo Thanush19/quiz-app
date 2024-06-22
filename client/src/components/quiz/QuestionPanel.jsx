@@ -232,7 +232,7 @@ const QuestionPanel = () => {
             {anchorEl && (
               <div
                 ref={dropdownRef}
-                className="absolute bg-white shadow-lg rounded-lg border md:w-[30%] w-[50%] border-gray-200 h-[138%] md:h-[72%] overflow-y-auto"
+                className="absolute bg-white shadow-lg rounded-lg border xl:w-[15%]  lg:w-[20%] md:w-[30%] w-[50%] border-gray-200 h-[80%] lg:h-[110%] md:h-[10%] overflow-y-auto"
               >
                 {quiz.questions.map((question, index) => (
                   <div

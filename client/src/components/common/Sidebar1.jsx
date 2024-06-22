@@ -37,9 +37,9 @@ const Sidebar1 = () => {
 
   return (
     <>
-      <div className="md:hidden">
-        <button onClick={toggleSidebar} className="p-4">
-          <BsList />
+      <div className="md:hidden flex justify-center    ">
+        <button onClick={toggleSidebar} className=" w-10 h-10 ml-[1rem] ">
+          <BsList className="  text-black absolute  top-[1.5rem]  left-[0.4rem] h-10 w-10" />
         </button>
       </div>
 

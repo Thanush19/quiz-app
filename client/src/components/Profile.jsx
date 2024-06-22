@@ -5,6 +5,8 @@ import { Chart as ChartJS, ArcElement, Legend, Tooltip } from "chart.js";
 import { UserContext } from "../context/userContext";
 import { BsArrowLeft } from "react-icons/bs";
 import { backend } from "../../constant";
+import * as echarts from "echarts";
+
 import {
   LineChart,
   Line,
