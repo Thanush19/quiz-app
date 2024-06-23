@@ -61,16 +61,16 @@ const TestResult = () => {
       <div className="w-[90%] md:h-12 h-10 md:mt-5 mt-2 rounded-3xl bg-white"></div>
 
       <div className="flex flex-col justify-center items-center w-full px-4 md:w-[80%] lg:w-[60%] xl:w-[50%] min-h-[calc(100vh-8rem)]">
-        <h1 className="md:text-3xl text-md font-bold text-green-600 mt-4">
+        <h1 className="md:text-3xl text-lg font-bold text-green-600 mt-4">
           Thank you for taking the test
         </h1>
-        <h1 className="md:text-3xl text-md font-bold mb-4 md:mt-4 mt-4 text-green-600">
+        <h1 className="md:text-3xl text-lg font-bold mb-4 md:mt-4 mt-4 text-green-600">
           Your Report
         </h1>
         <div className="flex flex-col md:flex-row justify-around w-full md:mt-8">
           <div className="md:w-[45%] m-7 md:m-1 rounded-xl bg-white p-4 mb-8 md:mb-0 relative">
-            <h2 className="md:first-line:text-xl text-[1px] text-nowrap font-bold mb-4 text-center">
-              Questions Attended
+            <h2 className="md:first-line:text-xl text-xl text-nowrap font-bold mb-4 text-center">
+              Questions attended{" "}
             </h2>
             <div className="flex justify-center">
               {getDoughnutChart(
@@ -106,9 +106,7 @@ const TestResult = () => {
             </div>
           </div>
           <div className="md:w-[45%] m-7 md:m-1 rounded-xl bg-white p-4 relative">
-            <h2 className="text-xl font-bold text-center mb-4">
-              Correct Answers
-            </h2>
+            <h2 className=" font-bold text-center mb-4">Correct Answers</h2>
             <div className="flex justify-center">
               {getDoughnutChart(
                 correctCount,

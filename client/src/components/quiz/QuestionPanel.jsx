@@ -185,7 +185,8 @@ const QuestionPanel = () => {
 
   return (
     <div className="flex flex-col h-screen relative font-sathoshi ">
-      <div className="h-[10%] md:h-[10%] md:p-0.1 p-3 m-4 md:rounded-3xl rounded-2xl bg-white flex items-center justify-between  relative">
+      {/* header */}
+      <div className="h-[14%] md:h-[5rem] md:p-0.1 p-3 m-4 md:rounded-3xl rounded-2xl bg-white flex items-center justify-between  relative">
         {/* Previous Button */}
         {/* {currentQuestion > 0 && (
          
@@ -194,7 +195,7 @@ const QuestionPanel = () => {
           className="text-black bg-gray-100  hover:text-gray-800 md:mr-4  md:p-3 p-1 ml-[10%] mr-4 rounded-xl focus:outline-none"
           onClick={handleEndTest}
         >
-          <BsArrowLeft className="md:h-5 md:w-5 h-4 w-4 " />
+          <BsArrowLeft className="md:h-5 md:w-5 sm:h-4 sm:w-4 h-5 w-5 " />
         </button>
         {/* Menu Icon */}
 
@@ -202,20 +203,20 @@ const QuestionPanel = () => {
           className="text-gray bg-gray-100 md:p-3 p-1.5  rounded-xl  hover:text-gray-800 focus:outline-none relative"
           onClick={handleMenuClick}
         >
-          <BiMenu className="md:h-5 md:w-5 h-4 w-4 " />
+          <BiMenu className="md:h-5 md:w-5 sm:h-4 sm:w-4 h-5 w-5 " />
         </button>
 
         {/* Timer */}
         <div className="flex md:flex-grow sm:w-[2rem]  ml-6  md:ml-1 items-center justify-center">
-          <BsClock className="md:h-5 md:w-5 h-4 w-4  mr-2 text-gray-600 md:mr-2" />
-          <span className="text-gray-600 sm:mr-5">
+          <BsClock className="md:h-5 md:w-5 h-4 w-4 lg:h-7 lg:w-7 mr-2 text-gray-600 md:mr-2" />
+          <span className="text-gray-600 sm:mr-5 md:text-lg">
             {formatTime(elapsedTime)}
           </span>
         </div>
 
         {/* End Test Button */}
         <button
-          className="ml-auto text-sm text-black font-medium bg-gray-100 md:p-3 p-3 mr-[3%] rounded-xl hover:text-gray-800 focus:outline-none relative"
+          className="ml-2 md:ml-auto sm:text-sm text-[14px] text-black font-medium bg-gray-100 md:p-3 sm:p-3 p-3  mr-[3%] rounded-xl hover:text-gray-800 focus:outline-none relative"
           onClick={handleSubmitQuiz}
         >
           End Round
@@ -232,7 +233,7 @@ const QuestionPanel = () => {
             {anchorEl && (
               <div
                 ref={dropdownRef}
-                className="absolute bg-white shadow-lg rounded-lg border xl:w-[15%]  lg:w-[20%] md:w-[30%] w-[50%] border-gray-200 h-[80%] lg:h-[110%] md:h-[10%] overflow-y-auto"
+                className="absolute bg-white shadow-lg rounded-lg border xl:w-[15%]  lg:w-[20%] md:w-[30%] w-[60%] border-gray-200 h-[80%] lg:h-[110%] xl:h-[70%] md:h-[10%] overflow-y-auto"
               >
                 {quiz.questions.map((question, index) => (
                   <div
@@ -306,7 +307,7 @@ const QuestionPanel = () => {
           </div>
 
           {/* Answer Section */}
-          <div className="md:w-[57.5%]   overflow-y-auto md:ml-4    md:h-[100%]  w-[80%] h-[60%] mb-2 rounded-xl bg-white md:p-10 p-5 ">
+          <div className="md:w-[57.5%]   overflow-y-auto md:ml-4    md:h-[100%]  w-[80%] h-[60%] mb-2 rounded-xl bg-white md:p-10 sm:p-5 p-2 ">
             <ul className="">
               <h2 className=" md:ml-4   mb-5 md:mb-[0.1px]  ">
                 Select the Correct answer
@@ -341,7 +342,7 @@ const QuestionPanel = () => {
 
       {/* Footer */}
       {/* <div className="h-[15%] md:h-[10%] md:p-0.1 p-3 m-4 md:rounded-3xl rounded-2xl bg-white flex items-center justify-between  relative"></div> */}
-      <div className="h-[10%] md:h-[5rem] md:p-0.1 md:mt-6 m-4 p-3 -mt-5  md:mb-6 rounded-2xl bg-white flex items-center justify-between relative">
+      <div className="h-[14%] md:h-[5rem] md:p-0.1 md:mt-6 m-4 p-3 -mt-5  md:mb-6 rounded-2xl bg-white flex items-center justify-between relative">
         {/* Previous Button */}
         <div className="flex-grow flex md:justify-center  rounded-3xl ">
           <button
