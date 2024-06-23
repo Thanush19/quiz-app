@@ -241,39 +241,6 @@ const Profile = () => {
                 )}
               </div>
             )}
-            <div className="bg-white p-4 md:ml-[10%] m-2 shadow-md w-[90%] md:w-80">
-              <h2 className="text-center text-xl font-semibold  text-violet-400 mb-2">
-                Quiz Performance
-              </h2>
-              {chartData && (
-                <div style={{ width: "100%", height: "300px" }}>
-                  <Pie
-                    data={chartData}
-                    options={{
-                      maintainAspectRatio: false,
-                      responsive: true,
-                      animation: {
-                        animateScale: true,
-                        animateRotate: true,
-                      },
-                      plugins: {
-                        tooltip: {
-                          callbacks: {
-                            label: function (tooltipItem) {
-                              return `${tooltipItem.label}: ${tooltipItem.raw}%`;
-                            },
-                          },
-                        },
-                        legend: {
-                          display: true,
-                          position: "bottom",
-                        },
-                      },
-                    }}
-                  />
-                </div>
-              )}
-            </div>
           </div>
         </div>
       </div>
