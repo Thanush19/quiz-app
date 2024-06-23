@@ -1,26 +1,36 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import axios from "axios";
 import { Pie } from "react-chartjs-2";
-import { Chart as ChartJS, ArcElement, Legend, Tooltip } from "chart.js";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  ArcElement,
+} from "chart.js";
 import { UserContext } from "../context/userContext";
 import { BsArrowLeft } from "react-icons/bs";
 import { backend } from "../../constant";
+import * as echarts from "echarts";
 
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip as RechartsTooltip,
-  Legend as RechartsLegend,
-  ResponsiveContainer,
-} from "recharts";
 import Sidebar from "./common/Sidebar";
 import { useNavigate } from "react-router-dom";
 import Sidebar1 from "./common/Sidebar1";
 
-ChartJS.register(ArcElement, Legend, Tooltip);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  ArcElement
+);
 
 const Profile = () => {
   const { user, logout } = useContext(UserContext);
@@ -28,6 +38,7 @@ const Profile = () => {
   const [chartData, setChartData] = useState(null);
   const [averageTimeData, setAverageTimeData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const chartRef = useRef(null);
 
   useEffect(() => {
     const fetchQuizAttempts = async () => {
@@ -71,18 +82,16 @@ const Profile = () => {
         (wrongAnswers / totalQuestionsAttempted) *
         100
       ).toFixed(2);
-      const remainingPercentage = (
-        100 -
-        correctPercentage -
-        wrongPercentage
-      ).toFixed(2);
+      const unAttempted = (100 - correctPercentage - wrongPercentage).toFixed(
+        2
+      );
 
       setChartData({
-        labels: ["Correct %", "Wrong %", "Remaining %"],
+        labels: ["Correct %", "Wrong %", "Un-Attempted %"],
         datasets: [
           {
             label: "Quiz Data",
-            data: [correctPercentage, wrongPercentage, remainingPercentage],
+            data: [correctPercentage, wrongPercentage, unAttempted],
             backgroundColor: [
               "rgba(75, 192, 192, 0.6)",
               "rgba(255, 99, 132, 0.6)",
@@ -100,13 +109,93 @@ const Profile = () => {
 
       const averageTimeChartData = quizAttempts.map((attempt, index) => ({
         name: `Attempt ${index + 1}`,
-        uv: parseFloat(attempt.average_time_taken),
-        pv: parseFloat(attempt.correctly_answered),
+        timeTaken: parseFloat(attempt.average_time_taken),
+        correctlyAnswered: parseFloat(attempt.correctly_answered),
       }));
 
       setAverageTimeData(averageTimeChartData);
     }
   }, [quizAttempts]);
+
+  useEffect(() => {
+    if (averageTimeData.length > 0 && chartRef.current) {
+      const chartInstance = echarts.init(chartRef.current);
+
+      const option = {
+        title: {
+          // text: "Average Time Taken and Correct Answers",
+          left: "center",
+          textStyle: {
+            color: "#333",
+            fontWeight: "bold",
+            fontSize: 16,
+          },
+        },
+        tooltip: {
+          trigger: "axis",
+        },
+        legend: {
+          data: ["Time Taken (sec)", "Correct Answers"],
+          bottom: 10,
+        },
+        xAxis: {
+          type: "category",
+          data: averageTimeData.map((data) => data.name),
+        },
+        yAxis: [
+          {
+            type: "value",
+            name: "Time Taken (sec)",
+            position: "left",
+            axisLine: {
+              lineStyle: {
+                color: "#8884d8",
+              },
+            },
+          },
+          {
+            type: "value",
+            name: "Correct Answers",
+            position: "right",
+            axisLine: {
+              lineStyle: {
+                color: "#82ca9d",
+              },
+            },
+          },
+        ],
+        series: [
+          {
+            name: "Time Taken (sec)",
+            type: "line",
+            data: averageTimeData.map((data) => data.timeTaken),
+            smooth: true,
+            animationDuration: 1000,
+            itemStyle: {
+              color: "#8884d8",
+            },
+          },
+          {
+            name: "Correct Answers",
+            type: "line",
+            yAxisIndex: 1,
+            data: averageTimeData.map((data) => data.correctlyAnswered),
+            smooth: true,
+            animationDuration: 1000,
+            itemStyle: {
+              color: "#82ca9d",
+            },
+          },
+        ],
+      };
+
+      chartInstance.setOption(option);
+
+      return () => {
+        chartInstance.dispose();
+      };
+    }
+  }, [averageTimeData]);
 
   const nav = useNavigate();
   const goBack = () => {
@@ -116,11 +205,10 @@ const Profile = () => {
   return (
     <>
       <div className="flex">
-        {/* <Sidebar /> */}
         <Sidebar1 />
 
         <div className="flex-grow md:w-[60%] ">
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center ">
             <button
               onClick={goBack}
               className="text-white bg-violet-400 md:mr-10 hover:bg-violet-700 md:p-4 p-2 rounded ml-4"
@@ -138,90 +226,55 @@ const Profile = () => {
               Logout
             </button>
           </div>
-          {loading ? (
-            <p>Loading quiz data...</p>
-          ) : (
-            <div className="flex flex-col md:ml-[10%] md:flex-row items-center">
-              <div className="bg-white p-4 m-2 shadow-md w-[90%] md:w-80">
-                <h2 className="text-center text-xl font-semibold  text-violet-400 mb-2">
-                  Quiz Performance
-                </h2>
-                {chartData && (
-                  <ResponsiveContainer width="110%" height={300}>
-                    <Pie
-                      data={chartData}
-                      options={{
-                        animation: {
-                          animateScale: true,
-                          animateRotate: true,
-                        },
-                        plugins: {
-                          tooltip: {
-                            callbacks: {
-                              label: function (tooltipItem, data) {
-                                return `${
-                                  data.labels[tooltipItem.dataIndex]
-                                }: ${
-                                  data.datasets[0].data[tooltipItem.dataIndex]
-                                }%`;
-                              },
-                            },
-                          },
-                          legend: {
-                            display: true,
-                            position: "bottom",
-                          },
-                        },
-                      }}
-                    />
-                  </ResponsiveContainer>
-                )}
-              </div>
-              {averageTimeData.length > 0 && (
-                <div className="flex justify-center w-full">
-                  <div className="bg-white p-4 m-2 shadow-md w-[90%] md:w-80">
+          <div className="flex md:flex-row flex-col">
+            {loading ? (
+              <p>Loading quiz data...</p>
+            ) : (
+              <div className="flex md:flex-row justify-between  flex-col md:ml-[10%]  items-center">
+                {averageTimeData.length > 0 && (
+                  <div className="bg-white p-4 m-2 shadow-md sm:w-[140%]  ">
                     <h2 className="text-center text-violet-400 text-xl font-semibold mb-2">
                       Average Time Taken (in sec)
                     </h2>
-                    <ResponsiveContainer width="100%" height={300}>
-                      <LineChart
-                        width={500}
-                        height={400}
-                        data={averageTimeData}
-                        syncId="anyId"
-                        margin={{
-                          top: 10,
-                          right: 30,
-                          left: 0,
-                          bottom: 0,
-                        }}
-                      >
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="name" />
-                        <YAxis />
-                        <RechartsTooltip />
-                        <RechartsLegend />
-                        <Line
-                          type="monotone"
-                          dataKey="Attemp no."
-                          stroke="#8884d8"
-                          fill="#8884d8"
-                          animationDuration={500}
-                        />
-                        <Line
-                          type="monotone"
-                          dataKey="Time Taken"
-                          stroke="#82ca9d"
-                          fill="#82ca9d"
-                          animationDuration={500}
-                        />
-                      </LineChart>
-                    </ResponsiveContainer>
+                    <div ref={chartRef} style={{ width: 300, height: 300 }} />
                   </div>
+                )}
+              </div>
+            )}
+            <div className="bg-white p-4 md:ml-[10%] m-2 shadow-md w-[90%] md:w-80">
+              <h2 className="text-center text-xl font-semibold  text-violet-400 mb-2">
+                Quiz Performance
+              </h2>
+              {chartData && (
+                <div style={{ width: "100%", height: "300px" }}>
+                  <Pie
+                    data={chartData}
+                    options={{
+                      maintainAspectRatio: false,
+                      responsive: true,
+                      animation: {
+                        animateScale: true,
+                        animateRotate: true,
+                      },
+                      plugins: {
+                        tooltip: {
+                          callbacks: {
+                            label: function (tooltipItem) {
+                              return `${tooltipItem.label}: ${tooltipItem.raw}%`;
+                            },
+                          },
+                        },
+                        legend: {
+                          display: true,
+                          position: "bottom",
+                        },
+                      },
+                    }}
+                  />
                 </div>
               )}
             </div>
-          )}
+          </div>
         </div>
       </div>
     </>
