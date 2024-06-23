@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { Doughnut } from "react-chartjs-2";
+import { Pie } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Legend, Tooltip } from "chart.js";
 import { UserContext } from "../context/userContext";
 import { BsArrowLeft } from "react-icons/bs";
 import { backend } from "../../constant";
-import * as echarts from "echarts";
 
 import {
   LineChart,
@@ -79,7 +78,7 @@ const Profile = () => {
       ).toFixed(2);
 
       setChartData({
-        labels: ["Correct %", "Wrong %", "questions attempted %"],
+        labels: ["Correct %", "Wrong %", "Remaining %"],
         datasets: [
           {
             label: "Quiz Data",
@@ -108,6 +107,7 @@ const Profile = () => {
       setAverageTimeData(averageTimeChartData);
     }
   }, [quizAttempts]);
+
   const nav = useNavigate();
   const goBack = () => {
     nav("/");
@@ -147,10 +147,14 @@ const Profile = () => {
                   Quiz Performance
                 </h2>
                 {chartData && (
-                  <ResponsiveContainer width="100%" height={400}>
-                    <Doughnut
+                  <ResponsiveContainer width="110%" height={300}>
+                    <Pie
                       data={chartData}
                       options={{
+                        animation: {
+                          animateScale: true,
+                          animateRotate: true,
+                        },
                         plugins: {
                           tooltip: {
                             callbacks: {
@@ -179,7 +183,7 @@ const Profile = () => {
                     <h2 className="text-center text-violet-400 text-xl font-semibold mb-2">
                       Average Time Taken (in sec)
                     </h2>
-                    <ResponsiveContainer width="100%" height={400}>
+                    <ResponsiveContainer width="100%" height={300}>
                       <LineChart
                         width={500}
                         height={400}
@@ -196,18 +200,20 @@ const Profile = () => {
                         <XAxis dataKey="name" />
                         <YAxis />
                         <RechartsTooltip />
-                        <Legend />
+                        <RechartsLegend />
                         <Line
                           type="monotone"
-                          dataKey="uv"
+                          dataKey="Attemp no."
                           stroke="#8884d8"
                           fill="#8884d8"
+                          animationDuration={500}
                         />
                         <Line
                           type="monotone"
-                          dataKey="pv"
+                          dataKey="Time Taken"
                           stroke="#82ca9d"
                           fill="#82ca9d"
+                          animationDuration={500}
                         />
                       </LineChart>
                     </ResponsiveContainer>

@@ -9,7 +9,7 @@ const Home = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="flex h-screen font-sathoshi ">
+    <div className="flex h-screen font-satoshi ">
       {/* <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} /> */}
       <Sidebar1 />
 
