@@ -216,7 +216,7 @@ const QuestionPanel = () => {
 
         {/* End Test Button */}
         <button
-          className="ml-2 md:ml-auto sm:text-sm text-[14px] text-black font-medium bg-gray-100 md:p-3 sm:p-3 p-3  mr-[3%] rounded-xl hover:text-gray-800 focus:outline-none relative"
+          className="ml-2 md:ml-auto sm:text-sm  text-black font-medium bg-gray-100 md:p-3 sm:p-3 p-2 text-[10px]  mr-[3%] rounded-xl hover:text-gray-800 focus:outline-none relative"
           onClick={handleSubmitQuiz}
         >
           End Round
@@ -228,7 +228,7 @@ const QuestionPanel = () => {
         <div className="h-full flex items-center md:flex-row flex-col ">
           {/* Questions Section */}
 
-          <div className="md:w-[40%] md:h-[100%]  w-[80%] md:ml-4 h-[30%] mb-2 rounded-xl bg-white overflow-y-auto custom-scrollbar">
+          <div className="md:w-[40%] md:h-[100%]  w-[80%] md:ml-4 h-[30%] mb-2 rounded-xl bg-white overflow-y-auto text-sm sm:test-md   custom-scrollbar">
             {/* dropdown           */}
             {anchorEl && (
               <div
@@ -307,7 +307,7 @@ const QuestionPanel = () => {
           </div>
 
           {/* Answer Section */}
-          <div className="md:w-[57.5%]   overflow-y-auto md:ml-4    md:h-[100%]  w-[80%] h-[60%] mb-2 rounded-xl bg-white md:p-10 sm:p-5 p-2 ">
+          <div className="md:w-[57.5%]   overflow-y-auto md:ml-4  text-sm sm:test-md   md:h-[100%]  w-[80%] h-[60%] mb-2 rounded-xl bg-white md:p-10 sm:p-5 p-3 ">
             <ul className="">
               <h2 className=" md:ml-4   mb-5 md:mb-[0.1px]  ">
                 Select the Correct answer
@@ -316,7 +316,7 @@ const QuestionPanel = () => {
               {quiz.questions[currentQuestion].options.map((option, oIndex) => (
                 <li
                   key={oIndex}
-                  className="mb-2 border  md:max-w-[40%] border-gray-300 rounded-3xl p-3 md:mt-6 flex"
+                  className="mb-2 border text-[13px] sm:test-md   md:max-w-[40%] border-gray-300 rounded-3xl p-3 md:mt-6 flex"
                 >
                   <label className="">
                     <input
