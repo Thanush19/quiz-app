@@ -16,10 +16,8 @@ import { UserContext } from "../context/userContext";
 import { BsArrowLeft } from "react-icons/bs";
 import { backend } from "../../constant";
 import * as echarts from "echarts";
-
-import Sidebar from "./common/Sidebar";
-import { useNavigate } from "react-router-dom";
 import Sidebar1 from "./common/Sidebar1";
+import { useNavigate } from "react-router-dom";
 
 ChartJS.register(
   CategoryScale,
@@ -93,15 +91,11 @@ const Profile = () => {
             label: "Quiz Data",
             data: [correctPercentage, wrongPercentage, unAttempted],
             backgroundColor: [
-              "rgba(75, 192, 192, 0.6)",
-              "rgba(255, 99, 132, 0.6)",
-              "rgba(211, 211, 211, 0.6)",
+              "#60D074", // Correct answers color
+              "red", // Wrong answers color
+              "#F3F3F3", // Unattempted answers color
             ],
-            borderColor: [
-              "rgba(75, 192, 192, 1)",
-              "rgba(255, 99, 132, 1)",
-              "rgba(211, 211, 211, 1)",
-            ],
+            borderColor: ["#60D074", "red", "#F3F3F3"],
             borderWidth: 1,
           },
         ],
@@ -123,7 +117,6 @@ const Profile = () => {
 
       const option = {
         title: {
-          // text: "Average Time Taken and Correct Answers",
           left: "center",
           textStyle: {
             color: "#333",
@@ -191,8 +184,15 @@ const Profile = () => {
 
       chartInstance.setOption(option);
 
+      const resizeChart = () => {
+        chartInstance.resize();
+      };
+
+      window.addEventListener("resize", resizeChart);
+
       return () => {
         chartInstance.dispose();
+        window.removeEventListener("resize", resizeChart);
       };
     }
   }, [averageTimeData]);
@@ -207,13 +207,13 @@ const Profile = () => {
       <div className="flex">
         <Sidebar1 />
 
-        <div className="flex-grow md:w-[60%] ">
-          <div className="flex justify-between items-center ">
+        <div className="flex-grow md:w-[60%]">
+          <div className="flex justify-between items-center">
             <button
               onClick={goBack}
               className="text-white bg-violet-400 md:mr-10 hover:bg-violet-700 md:p-4 p-2 rounded ml-4"
             >
-              <BsArrowLeft className="h-5 w-5 " />
+              <BsArrowLeft className="h-5 w-5" />
             </button>
 
             <h1 className="text-center text-2xl mx-auto mt-20 text-violet-400 font-bold mb-4">
@@ -226,17 +226,29 @@ const Profile = () => {
               Logout
             </button>
           </div>
-          <div className="flex md:flex-row flex-col">
+          <div className="flex flex-col items-center">
             {loading ? (
               <p>Loading quiz data...</p>
             ) : (
-              <div className="flex md:flex-row justify-between  flex-col md:ml-[10%]  items-center">
+              <div className="w-full">
                 {averageTimeData.length > 0 && (
-                  <div className="bg-white p-4 m-2 shadow-md sm:w-[140%]  ">
+                  <div className="bg-white p-4 m-2 shadow-md w-full">
                     <h2 className="text-center text-violet-400 text-xl font-semibold mb-2">
                       Average Time Taken (in sec)
                     </h2>
-                    <div ref={chartRef} style={{ width: 300, height: 300 }} />
+                    <div
+                      ref={chartRef}
+                      className="w-full"
+                      style={{ height: "300px" }}
+                    />
+                  </div>
+                )}
+                {chartData && (
+                  <div className="bg-white p-4 m-2 shadow-md md:w-full sm:w-[80%] h-[50%]">
+                    <h2 className="text-center text-violet-400 text-xl font-semibold mb-2">
+                      Quiz Results
+                    </h2>
+                    <Pie data={chartData} />
                   </div>
                 )}
               </div>
