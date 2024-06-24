@@ -18,6 +18,7 @@ import { backend } from "../../constant";
 import * as echarts from "echarts";
 import Sidebar1 from "./common/Sidebar1";
 import { useNavigate } from "react-router-dom";
+import Activity from "./Activity";
 
 ChartJS.register(
   CategoryScale,
@@ -37,6 +38,11 @@ const Profile = () => {
   const [averageTimeData, setAverageTimeData] = useState([]);
   const [loading, setLoading] = useState(true);
   const chartRef = useRef(null);
+
+  const nav = useNavigate();
+  const goBack = () => {
+    nav("/");
+  };
 
   useEffect(() => {
     const fetchQuizAttempts = async () => {
@@ -197,39 +203,32 @@ const Profile = () => {
     }
   }, [averageTimeData]);
 
-  const nav = useNavigate();
-  const goBack = () => {
-    nav("/");
-  };
-
   return (
-    <>
-      <div className="flex">
-        <Sidebar1 />
-
-        <div className="flex-grow md:w-[60%]">
-          <div className="flex justify-between items-center">
-            <button
-              onClick={goBack}
-              className="text-white bg-violet-400 md:mr-10 hover:bg-violet-700 md:p-4 p-2 rounded ml-4"
-            >
-              <BsArrowLeft className="h-5 w-5" />
-            </button>
-
-            <h1 className="text-center text-2xl mx-auto mt-20 text-violet-400 font-bold mb-4">
-              Profile Overview
-            </h1>
-            <button
-              onClick={logout}
-              className="text-white bg-red-500 md:mr-10 hover:bg-red-700 md:p-4 p-1 md:text-xl text-md rounded ml-4"
-            >
-              Logout
-            </button>
-          </div>
-          <div className="flex flex-col items-center">
-            {loading ? (
-              <p>Loading quiz data...</p>
-            ) : (
+    <div className="flex ">
+      <Sidebar1 />
+      <div className="flex-grow md:w-[60%]">
+        <div className="flex justify-between items-center">
+          <button
+            onClick={goBack}
+            className="text-white bg-violet-400 md:mr-10 hover:bg-violet-700 md:p-4 p-2 rounded ml-4"
+          >
+            <BsArrowLeft className="h-5 w-5" />
+          </button>
+          <h1 className="text-center text-2xl mx-auto mt-20 text-violet-400 font-bold mb-4">
+            Profile Overview
+          </h1>
+          <button
+            onClick={logout}
+            className="text-white bg-red-500 md:mr-10 hover:bg-red-700 md:p-4 p-1 md:text-xl text-md rounded ml-4"
+          >
+            Logout
+          </button>
+        </div>
+        <div className="flex flex-col items-center">
+          {loading ? (
+            <p>Loading quiz data...</p>
+          ) : (
+            <>
               <div className="w-full">
                 {averageTimeData.length > 0 && (
                   <div className="bg-white p-4 m-2 shadow-md w-full">
@@ -243,20 +242,25 @@ const Profile = () => {
                     />
                   </div>
                 )}
+              </div>
+              {/* <div className="w-full">
                 {/* {chartData && (
-                  <div className="bg-white p-4 m-2 shadow-md md:w-full sm:w-[80%] h-[50%]">
+                  <div className="bg-white p-4 m-2 shadow-md w-full">
                     <h2 className="text-center text-violet-400 text-xl font-semibold mb-2">
                       Quiz Results
                     </h2>
                     <Pie data={chartData} />
                   </div>
-                )} */}
+                )}
+              </div>  */}
+              <div className="w-[80%] ">
+                <Activity />
               </div>
-            )}
-          </div>
+            </>
+          )}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
