@@ -243,14 +243,14 @@ const Profile = () => {
                     />
                   </div>
                 )}
-                {chartData && (
+                {/* {chartData && (
                   <div className="bg-white p-4 m-2 shadow-md md:w-full sm:w-[80%] h-[50%]">
                     <h2 className="text-center text-violet-400 text-xl font-semibold mb-2">
                       Quiz Results
                     </h2>
                     <Pie data={chartData} />
                   </div>
-                )}
+                )} */}
               </div>
             )}
           </div>
