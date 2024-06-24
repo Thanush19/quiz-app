@@ -19,7 +19,7 @@ import * as echarts from "echarts";
 import Sidebar1 from "./common/Sidebar1";
 import { useNavigate } from "react-router-dom";
 import Activity from "./Activity";
-
+import { ClipLoader } from "react-spinners";
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -204,7 +204,7 @@ const Profile = () => {
   }, [averageTimeData]);
 
   return (
-    <div className="flex ">
+    <div className="flex">
       <Sidebar1 />
       <div className="flex-grow md:w-[60%]">
         <div className="flex justify-between items-center">
@@ -226,7 +226,7 @@ const Profile = () => {
         </div>
         <div className="flex flex-col items-center">
           {loading ? (
-            <p>Loading quiz data...</p>
+            <ClipLoader /> // Display loader component instead of text
           ) : (
             <>
               <div className="w-full">
@@ -243,8 +243,9 @@ const Profile = () => {
                   </div>
                 )}
               </div>
+              {/* Uncomment the following to display Pie chart */}
               {/* <div className="w-full">
-                {/* {chartData && (
+                {chartData && (
                   <div className="bg-white p-4 m-2 shadow-md w-full">
                     <h2 className="text-center text-violet-400 text-xl font-semibold mb-2">
                       Quiz Results
@@ -252,8 +253,8 @@ const Profile = () => {
                     <Pie data={chartData} />
                   </div>
                 )}
-              </div>  */}
-              <div className="w-[80%] ">
+              </div> */}
+              <div className="w-[80%]">
                 <Activity />
               </div>
             </>

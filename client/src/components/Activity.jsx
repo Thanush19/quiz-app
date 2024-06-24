@@ -63,7 +63,7 @@ const Activity = () => {
   };
 
   return (
-    <div className="flex font-satoshi mb-[10%] -ml-10 ">
+    <div className="flex font-satoshi   -ml-10 ">
       {/* <Sidebar1 /> */}
       <div className="flex-grow md:w-[60%]">
         <div className="flex justify-between items-center">
@@ -74,7 +74,7 @@ const Activity = () => {
             <BsArrowLeft className="h-5 w-5" />
           </button> */}
 
-          <h1 className="text-center text-2xl mx-auto mt-20 text-indigo-600 font-bold mb-4">
+          <h1 className="text-center text-2xl mx-auto mt-20 text-ind font-bold mb-4">
             Activity Overview
           </h1>
           {/* <button
@@ -84,7 +84,7 @@ const Activity = () => {
             Logout
           </button> */}
         </div>
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center rounded-3xl ">
           {loading ? (
             <p>Loading quiz data...</p>
           ) : (
